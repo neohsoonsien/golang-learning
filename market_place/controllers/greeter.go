@@ -31,3 +31,17 @@ func (c *GreeterController) SayHello(ctx context.Context, in *pb.HelloRequest) (
 
 	return &pb.HelloResponse{Message: message}, nil
 }
+
+func (c *GreeterController) PageInfo(ctx context.Context, req *pb.PageInfoRequest) (*pb.PageInfoResponse, error) {
+	log.Printf("Received: %v", req.GetSearchRequest())
+
+	// Delegate business logic to service layer
+	pageInfo, err := c.greeterService.PageInfo(req.GetSearchRequest(), req.GetTotalItem())
+	if err != nil {
+		return nil, err
+	}
+
+	return &pb.PageInfoResponse{
+		PageInfo: pageInfo,
+	}, nil
+}

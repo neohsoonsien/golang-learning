@@ -27,6 +27,13 @@ service Greeter {
       get: "/api/hello/{name}"
     };
   }
+
+  rpc PageInfo (PageInfoRequest) returns (PageInfoResponse) {
+    option (google.api.http) = {
+      post: "/api/page-info"
+      body: "*"
+    };
+  }
 }
 
 // The request message containing the user's name.
@@ -37,4 +44,13 @@ message HelloRequest {
 // The response message containing the greetings
 message HelloResponse {
   string message = 1;
+}
+
+message PageInfoRequest {
+  SearchRequest search_request = 1;
+  int32 total_item = 2;
+}
+
+message PageInfoResponse {
+  PageInfo page_info = 1;
 }
