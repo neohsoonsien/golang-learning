@@ -45,3 +45,17 @@ func (c *GreeterController) PageInfo(ctx context.Context, req *pb.PageInfoReques
 		PageInfo: pageInfo,
 	}, nil
 }
+
+func (c *GreeterController) ListInvoices(ctx context.Context, req *pb.ListInvoicesRequest) (*pb.ListInvoicesResponse, error) {
+	log.Printf("Received: %v", req.GetNumber())
+
+	// Delegate business logic to service layer
+	invoices, err := c.greeterService.ListInvoices(req)
+	if err != nil {
+		return nil, err
+	}
+
+	return &pb.ListInvoicesResponse{
+		Invoices: invoices,
+	}, nil
+}
