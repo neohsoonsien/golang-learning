@@ -19,6 +19,23 @@ message PageInfo {
   int32 total_page_number = 5;
 }
 
+message Detail {
+  string name = 1;
+  string category = 2;
+  float unit_price = 3;
+  string unit_price_weight = 4;
+  float count = 5;
+  string count_unit = 6;
+}
+
+message Invoice {
+  string principal_id = 1;
+  string number = 2;
+  string vendor = 3;
+  int32 date_time = 4;
+  repeated Detail details = 5;
+}
+
 // The greeting service definition.
 service Greeter {
   // Sends a greeting
@@ -31,6 +48,14 @@ service Greeter {
   rpc PageInfo (PageInfoRequest) returns (PageInfoResponse) {
     option (google.api.http) = {
       post: "/api/page-info"
+      body: "*"
+    };
+  }
+
+  // get a list of invoices
+  rpc ListInvoices (ListInvoicesRequest) returns (ListInvoicesResponse) {
+    option (google.api.http) = {
+      post: "/api/invoice/list"
       body: "*"
     };
   }
@@ -53,4 +78,15 @@ message PageInfoRequest {
 
 message PageInfoResponse {
   PageInfo page_info = 1;
+}
+
+message ListInvoicesRequest {
+  optional string principal_id = 1;
+  optional string number = 2;
+  optional string vendor = 3;
+  optional int32 date_time_start = 4;
+}
+
+message ListInvoicesResponse {
+  repeated Invoice invoices = 1;
 }
