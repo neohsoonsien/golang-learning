@@ -4,7 +4,7 @@ import (
 	"context"
 	"log"
 
-	pb "golang-learning/market_place/pb"
+	pb "golang-learning/market_place/proto"
 	"golang-learning/market_place/services"
 )
 

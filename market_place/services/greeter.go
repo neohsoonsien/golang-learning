@@ -1,6 +1,11 @@
 package services
 
-import "fmt"
+import (
+	"fmt"
+
+	pb "golang-learning/market_place/proto"
+	"golang-learning/market_place/repositories"
+)
 
 type GreeterService struct {
 	// Could include dependencies like repositories, configs, etc.
@@ -12,6 +17,9 @@ func NewGreeterService() *GreeterService {
 
 // business logics
 func (s *GreeterService) GenerateGreeting(name string) (string, error) {
+	mongodbClient, err := repositories.InitMongoDB("mongodb://username:password@127.0.0.1:27017/marketplace")
+	fmt.Printf("MongoDB client: %v, error: %v", mongodbClient, err)
+
 	// validation and business rules, etc.
 	if name == "" {
 		return "", fmt.Errorf("name cannot be empty")

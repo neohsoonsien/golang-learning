@@ -35,7 +35,7 @@
 // 	"google.golang.org/grpc/credentials/insecure"
 // 	"google.golang.org/grpc/grpclog"
 
-// 	gw "golang-learning/market_place/pb" // Update
+// 	gw "golang-learning/market_place/proto" // Update
 // )
 
 // var (
@@ -86,7 +86,7 @@ import (
 	"google.golang.org/grpc/grpclog"
 
 	"golang-learning/market_place/controllers"
-	pb "golang-learning/market_place/pb"
+	pb "golang-learning/market_place/proto"
 	"golang-learning/market_place/services"
 )
 
@@ -105,11 +105,11 @@ func grpcServer() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
-	// start the server
-	// Dependency injection
+	// services and controllers dependencies injection
 	greeterService := services.NewGreeterService()
 	greeterController := controllers.NewGreeterController(greeterService)
 
+	// start the server
 	s := grpc.NewServer()
 	pb.RegisterGreeterServer(s, greeterController)
 	log.Printf("server listening at %v", lis.Addr())
