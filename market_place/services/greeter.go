@@ -68,6 +68,8 @@ func (s *GreeterService) ListInvoices(req *proto.ListInvoicesRequest) ([]*proto.
 	mongodbClient, err := repositories.InitMongoDB("mongodb://username:password@127.0.0.1:27017/marketplace")
 	fmt.Printf("MongoDB client: %v, error: %v", mongodbClient, err)
 
+	invoiceRepository := repositories.NewInvoiceRepository(mongodbClient.Database(repositories.MARKETPLACE_DATABASE).Collection(repositories.INVOICES_COLLECTION))
+
 	if req == nil {
 		return nil, fmt.Errorf("ListInvoicesRequest cannot be empty")
 	}
@@ -82,7 +84,7 @@ func (s *GreeterService) ListInvoices(req *proto.ListInvoicesRequest) ([]*proto.
 		},
 	}
 
-	invoices, err := repositories.ListInvoices(mongodbClient, filter)
+	invoices, err := invoiceRepository.ListInvoices(filter)
 	if err != nil {
 		return nil, err
 	}
