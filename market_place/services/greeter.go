@@ -3,7 +3,7 @@ package services
 import (
 	"fmt"
 
-	pb "golang-learning/market_place/proto"
+	proto "golang-learning/market_place/proto"
 	"golang-learning/market_place/repositories"
 )
 
@@ -17,9 +17,6 @@ func NewGreeterService() *GreeterService {
 
 // business logics
 func (s *GreeterService) GenerateGreeting(name string) (string, error) {
-	mongodbClient, err := repositories.InitMongoDB("mongodb://username:password@127.0.0.1:27017/marketplace")
-	fmt.Printf("MongoDB client: %v, error: %v", mongodbClient, err)
-
 	// validation and business rules, etc.
 	if name == "" {
 		return "", fmt.Errorf("name cannot be empty")
@@ -28,7 +25,7 @@ func (s *GreeterService) GenerateGreeting(name string) (string, error) {
 	return "Hello " + name, nil
 }
 
-func (s *GreeterService) PageInfo(pageRequest *pb.SearchRequest, totalItem int32) (*pb.PageInfo, error) {
+func (s *GreeterService) PageInfo(pageRequest *proto.SearchRequest, totalItem int32) (*proto.PageInfo, error) {
 	if totalItem == 0 {
 		return nil, fmt.Errorf("totalItem cannot be empty")
 	}
@@ -56,11 +53,34 @@ func (s *GreeterService) PageInfo(pageRequest *pb.SearchRequest, totalItem int32
 		currentPageNumber = totalPageNumber
 	}
 
-	return &pb.PageInfo{
+	return &proto.PageInfo{
 		PageSize:          pageSize,
 		CurrentPageNumber: currentPageNumber,
 		TotalItem:         totalItem,
 		CurrentPageSize:   currentPageSize,
 		TotalPageNumber:   totalPageNumber,
 	}, nil
+}
+
+func (s *GreeterService) ListInvoices(pageRequest *proto.ListInvoicesRequest) ([]*proto.Invoice, error) {
+	mongodbClient, err := repositories.InitMongoDB("mongodb://username:password@127.0.0.1:27017/marketplace")
+	fmt.Printf("MongoDB client: %v, error: %v", mongodbClient, err)
+
+	invoices, err := repositories.ListInvoices(mongodbClient)
+	if err != nil {
+		return nil, err
+	}
+
+	pbInvoices := []*proto.Invoice{}
+	for _, invoice := range *invoices {
+		pbInvoices = append(pbInvoices, &proto.Invoice{
+			PrincipalId: invoice.PrincipalId,
+			Number:      invoice.Number,
+			Vendor:      invoice.Vendor,
+			DateTime:    invoice.DateTime,
+			Details:     []*proto.Detail{},
+		})
+	}
+
+	return pbInvoices, nil
 }

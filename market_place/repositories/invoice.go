@@ -33,12 +33,12 @@ func InitMongoDB(mongodbURI string) (*mongo.Client, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to connect to MongoDB client, MongoDB URI: %v, error: %v", mongodbURI, err)
 	}
-	defer func() error {
-		if err = client.Disconnect(context.Background()); err != nil {
-			return fmt.Errorf("failed to disconnect from MongoDB client, MongoDB URI: %v, error: %v", mongodbURI, err)
-		}
-		return nil
-	}()
+	// defer func() error {
+	// 	if err = client.Disconnect(context.Background()); err != nil {
+	// 		return fmt.Errorf("failed to disconnect from MongoDB client, MongoDB URI: %v, error: %v", mongodbURI, err)
+	// 	}
+	// 	return nil
+	// }()
 
 	// Sends a ping to confirm a successful connection
 	var result bson.M
