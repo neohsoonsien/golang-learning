@@ -89,18 +89,7 @@ func (s *GreeterService) ListInvoices(req *proto.ListInvoicesRequest) ([]*proto.
 
 	pbInvoices := []*proto.Invoice{}
 	for _, invoice := range *invoices {
-		pbDetails := []*proto.Detail{}
-		for _, detail := range invoice.Details {
-			pbDetails = append(pbDetails, detail.ToPb())
-		}
-
-		pbInvoices = append(pbInvoices, &proto.Invoice{
-			PrincipalId: invoice.PrincipalId,
-			Number:      invoice.Number,
-			Vendor:      invoice.Vendor,
-			DateTime:    invoice.DateTime,
-			Details:     pbDetails,
-		})
+		pbInvoices = append(pbInvoices, invoice.ToPb())
 	}
 
 	return pbInvoices, nil
