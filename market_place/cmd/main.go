@@ -23,46 +23,49 @@
 //   r.Run()
 // }
 
-// Package main implements a server for Greeter service.
 package main
 
 import (
 	"context"
 	"flag"
-	"fmt"
-	"log"
-	"net"
+	"net/http"
 
-	pb "golang-learning/market_place/pb"
-
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/grpc/grpclog"
+
+	gw "golang-learning/market_place/pb" // Update
 )
 
 var (
-	port = flag.Int("port", 8081, "The server port")
+	// command-line options:
+	// gRPC server endpoint
+	grpcServerEndpoint = flag.String("grpc-server-endpoint", "localhost:9090", "gRPC server endpoint")
 )
 
-// server is used to implement helloworld.GreeterServer.
-type server struct {
-	pb.UnimplementedGreeterServer
-}
+func run() error {
+	ctx := context.Background()
+	ctx, cancel := context.WithCancel(ctx)
+	defer cancel()
 
-// SayHello implements helloworld.GreeterServer
-func (s *server) SayHello(_ context.Context, in *pb.HelloRequest) (*pb.HelloResponse, error) {
-	log.Printf("Received: %v", in.GetName())
-	return &pb.HelloResponse{Message: "Hello " + in.GetName()}, nil
+	// Register gRPC server endpoint
+	// Note: Make sure the gRPC server is running properly and accessible
+	mux := runtime.NewServeMux()
+	opts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
+	err := gw.RegisterGreeterHandlerFromEndpoint(ctx, mux, *grpcServerEndpoint, opts)
+	if err != nil {
+		return err
+	}
+
+	// Start HTTP server (and proxy calls to gRPC server endpoint)
+	return http.ListenAndServe(":8081", mux)
 }
 
 func main() {
 	flag.Parse()
-	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", *port))
-	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
-	}
-	s := grpc.NewServer()
-	pb.RegisterGreeterServer(s, &server{})
-	log.Printf("server listening at %v", lis.Addr())
-	if err := s.Serve(lis); err != nil {
-		log.Fatalf("failed to serve: %v", err)
+
+	if err := run(); err != nil {
+		grpclog.Fatal(err)
 	}
 }
