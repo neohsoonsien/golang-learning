@@ -6,6 +6,19 @@ package helloworld;
 
 import "google/api/annotations.proto";
 
+message SearchRequest {
+  int32 page_size = 1;
+  int32 current_page_number = 2;
+}
+
+message PageInfo {
+  int32 page_size = 1;
+  int32 current_page_number = 2;
+  int32 total_item = 3;
+  int32 current_page_size = 4;
+  int32 total_page_number = 5;
+}
+
 // The greeting service definition.
 service Greeter {
   // Sends a greeting
