@@ -4,6 +4,8 @@ import (
 	"context"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 
 	"go.mongodb.org/mongo-driver/v2/bson"
@@ -38,4 +40,69 @@ func createMockCursor(t *testing.T, documents []interface{}) *mongo.Cursor {
 
 	return cursor
 }
+
+func TestNewInvoiceRepository(t *testing.T) {
+	mockColl := &MockCollection{}
+
+	repo := NewInvoiceRepository(mockColl)
+
+	assert.NotNil(t, repo)
+	assert.Equal(t, mockColl, repo.collection)
+}
+
+func TestListInvoices(t *testing.T) {
+	mockColl := &MockCollection{}
+
+	// Prepare test data
+	testData := []interface{}{
+		bson.M{
+			"principalId": "user_2",
+			"number":      "20250620_0002",
+			"vendor":      "Vendor B",
+			"dateTime":    1753637000,
+			"details": bson.A{
+				bson.M{
+					"name":       "Item 3",
+					"category":   "Veges",
+					"unitPrice":  9,
+					"weightUnit": "kg",
+					"count":      3,
+					"countUnit":  "kg",
+				},
+				bson.M{
+					"name":       "Item 4",
+					"category":   "Veges",
+					"unitPrice":  7,
+					"weightUnit": "",
+					"count":      6,
+					"countUnit":  "",
+				},
+			},
+		},
+	}
+
+	// Create mock cursor with test data
+	cursor := createMockCursor(t, testData)
+
+	// Setup mock expectation
+	mockColl.On("Find",
+		mock.Anything,
+		mock.Anything,
+		mock.Anything,
+	).Return(cursor, nil)
+
+	filter := bson.M{
+		"number": "20250620_0002",
+		"vendor": "Vendor B",
+		"dateTime": bson.M{
+			"$gte": 1753635000,
+			"$lt":  1753635000 + int32(24*3600), // one day time range
+		},
+	}
+
+	repo := NewInvoiceRepository(mockColl)
+	repo.ListInvoices(filter)
+
+	// Verify expectations were met
+	mockColl.AssertExpectations(t)
 }
