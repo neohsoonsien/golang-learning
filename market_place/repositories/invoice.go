@@ -2,12 +2,15 @@ package repositories
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"log"
 
 	"go.mongodb.org/mongo-driver/v2/bson"
 	"go.mongodb.org/mongo-driver/v2/mongo"
 	"go.mongodb.org/mongo-driver/v2/mongo/options"
+
+	"golang-learning/market_place/models"
 )
 
 const DATABASE = "marketplace"
@@ -45,4 +48,34 @@ func InitMongoDB(mongodbURI string) (*mongo.Client, error) {
 	fmt.Println("Pinged your deployment. You successfully connected to MongoDB!")
 
 	return client, nil
+}
+
+func ListInvoices(client *mongo.Client) (*[]models.Invoice, error) {
+	coll := client.Database(DATABASE).Collection(COLLECTION)
+
+	// Creates a query filter to match documents in which the "cuisine"
+	// is "Italian"
+	filter := bson.D{{"number", "20250620_0001"}}
+	// Retrieves documents that match the query filter
+	cursor, err := coll.Find(context.Background(), filter)
+	if err != nil {
+		return nil, fmt.Errorf("failed to Find from %v, error: %v", COLLECTION, err)
+	}
+
+	// Unpacks the cursor into a slice
+	var invoices []models.Invoice
+	if err = cursor.All(context.Background(), &invoices); err != nil {
+		return nil, fmt.Errorf("failed to unpack cursor into 'invoices' slices")
+	}
+
+	// Prints the invoices of the find operation as structs
+	for _, invoice := range invoices {
+		output, err := json.MarshalIndent(invoice, "", "    ")
+		if err != nil {
+			return nil, fmt.Errorf("failed to marshal the 'invoices'")
+		}
+		fmt.Printf("%s\n", output)
+	}
+
+	return &invoices, nil
 }
