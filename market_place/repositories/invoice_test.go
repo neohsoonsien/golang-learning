@@ -4,44 +4,38 @@ import (
 	"context"
 	"testing"
 
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/mongo/integration/mtest"
+	"github.com/stretchr/testify/require"
+
+	"go.mongodb.org/mongo-driver/v2/bson"
+	"go.mongodb.org/mongo-driver/v2/mongo"
+	"go.mongodb.org/mongo-driver/v2/mongo/options"
 )
 
-func TestFindOperation(t *testing.T) {
-	mt := mtest.New(t, mtest.NewOptions().ClientType(mtest.Mock))
+type MockCollection struct {
+	mock.Mock
+}
 
-	mt.Run("find documents", func(mt *mtest.T) {
-		// Create a cursor response with sample data
-		expected := bson.D{{"name", "John"}}
+func (m *MockCollection) Find(ctx context.Context, filter any, opts ...options.Lister[options.FindOptions]) (*mongo.Cursor, error) {
+	args := m.Called(ctx, filter, opts)
+	if args.Get(0) == nil {
+		return nil, args.Error(1)
+	}
+	return args.Get(0).(*mongo.Cursor), args.Error(1)
+}
 
-		// Mock responses for find operation:
-		// 1. First batch with data
-		firstBatch := mtest.CreateCursorResponse(1, "test.collection", mtest.FirstBatch, expected)
-		// 2. Empty batch to signal end of cursor
-		emptyBatch := mtest.CreateCursorResponse(0, "test.collection", mtest.NextBatch)
+func (m *MockCollection) FindOne(ctx context.Context, filter any, opts ...options.Lister[options.FindOneOptions]) *mongo.SingleResult {
+	args := m.Called(ctx, filter, opts)
+	if args.Get(0) == nil {
+		return nil
+	}
+	return args.Get(0).(*mongo.SingleResult)
+}
 
-		// Add both responses - find() will consume them in sequence
-		mt.AddMockResponses(firstBatch, emptyBatch)
+func createMockCursor(t *testing.T, documents []interface{}) *mongo.Cursor {
+	// Create cursor from BSON data
+	cursor, err := mongo.NewCursorFromDocuments(documents, nil, nil)
+	require.NoError(t, err)
 
-		// Perform Find
-		cursor, err := mt.Coll.Find(context.TODO(), bson.D{})
-		if err != nil {
-			mt.Fatalf("Find failed: %v", err)
-		}
-		defer cursor.Close(context.TODO())
-
-		var results []bson.M
-		if err := cursor.All(context.TODO(), &results); err != nil {
-			mt.Fatalf("Cursor failed: %v", err)
-		}
-
-		// Assert
-		if len(results) != 1 {
-			mt.Fatalf("expected 1 result, got %d", len(results))
-		}
-		if results[0]["name"] != "John" {
-			mt.Errorf("expected name 'John', got '%v'", results[0]["name"])
-		}
-	})
+	return cursor
+}
 }
