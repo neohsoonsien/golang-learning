@@ -5,6 +5,8 @@ import (
 
 	proto "golang-learning/market_place/proto"
 	"golang-learning/market_place/repositories"
+
+	"go.mongodb.org/mongo-driver/v2/bson"
 )
 
 type GreeterService struct {
@@ -62,11 +64,25 @@ func (s *GreeterService) PageInfo(pageRequest *proto.SearchRequest, totalItem in
 	}, nil
 }
 
-func (s *GreeterService) ListInvoices(pageRequest *proto.ListInvoicesRequest) ([]*proto.Invoice, error) {
+func (s *GreeterService) ListInvoices(req *proto.ListInvoicesRequest) ([]*proto.Invoice, error) {
 	mongodbClient, err := repositories.InitMongoDB("mongodb://username:password@127.0.0.1:27017/marketplace")
 	fmt.Printf("MongoDB client: %v, error: %v", mongodbClient, err)
 
-	invoices, err := repositories.ListInvoices(mongodbClient)
+	if req == nil {
+		return nil, fmt.Errorf("ListInvoicesRequest cannot be empty")
+	}
+
+	// Creates a query filter to match documents in which the "number", "vendor", "dateTimeStart" match
+	filter := bson.M{
+		"number": req.GetNumber(),
+		"vendor": req.GetVendor(),
+		"dateTime": bson.M{
+			"$gte": req.GetDateTimeStart(),
+			"$lt":  req.GetDateTimeStart() + int32(24*3600), // one day time range
+		},
+	}
+
+	invoices, err := repositories.ListInvoices(mongodbClient, filter)
 	if err != nil {
 		return nil, err
 	}

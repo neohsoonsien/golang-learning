@@ -50,12 +50,9 @@ func InitMongoDB(mongodbURI string) (*mongo.Client, error) {
 	return client, nil
 }
 
-func ListInvoices(client *mongo.Client) (*[]models.Invoice, error) {
+func ListInvoices(client *mongo.Client, filter bson.M) (*[]models.Invoice, error) {
 	coll := client.Database(DATABASE).Collection(COLLECTION)
 
-	// Creates a query filter to match documents in which the "cuisine"
-	// is "Italian"
-	filter := bson.D{{"number", "20250620_0001"}}
 	// Retrieves documents that match the query filter
 	cursor, err := coll.Find(context.Background(), filter)
 	if err != nil {
