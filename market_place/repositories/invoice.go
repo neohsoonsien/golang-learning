@@ -13,8 +13,24 @@ import (
 	"golang-learning/market_place/models"
 )
 
-const DATABASE = "marketplace"
-const COLLECTION = "invoices"
+const MARKETPLACE_DATABASE = "marketplace"
+const INVOICES_COLLECTION = "invoices"
+
+// MongoCollection interface wraps the methods which need to be mocked
+type MongoCollection interface {
+	Find(ctx context.Context, filter any, opts ...options.Lister[options.FindOptions]) (*mongo.Cursor, error)
+	FindOne(ctx context.Context, filter any, opts ...options.Lister[options.FindOneOptions]) *mongo.SingleResult
+}
+
+type InvoiceRepository struct {
+	collection MongoCollection
+}
+
+func NewInvoiceRepository(collection MongoCollection) *InvoiceRepository {
+	return &InvoiceRepository{
+		collection: collection,
+	}
+}
 
 func InitMongoDB(mongodbURI string) (*mongo.Client, error) {
 
@@ -42,7 +58,7 @@ func InitMongoDB(mongodbURI string) (*mongo.Client, error) {
 
 	// Sends a ping to confirm a successful connection
 	var result bson.M
-	if err := client.Database(DATABASE).RunCommand(context.Background(), bson.D{{"ping", 1}}).Decode(&result); err != nil {
+	if err := client.Database(MARKETPLACE_DATABASE).RunCommand(context.Background(), bson.D{{"ping", 1}}).Decode(&result); err != nil {
 		return nil, fmt.Errorf("failed to ping connection to MongoDB client, MongoDB URI: %v, error: %v", mongodbURI, err)
 	}
 	fmt.Println("Pinged your deployment. You successfully connected to MongoDB!")
@@ -50,13 +66,13 @@ func InitMongoDB(mongodbURI string) (*mongo.Client, error) {
 	return client, nil
 }
 
-func ListInvoices(client *mongo.Client, filter bson.M) (*[]models.Invoice, error) {
-	coll := client.Database(DATABASE).Collection(COLLECTION)
+func (r *InvoiceRepository) ListInvoices(filter bson.M) (*[]models.Invoice, error) {
+	coll := r.collection
 
 	// Retrieves documents that match the query filter
 	cursor, err := coll.Find(context.Background(), filter)
 	if err != nil {
-		return nil, fmt.Errorf("failed to Find from %v, error: %v", COLLECTION, err)
+		return nil, fmt.Errorf("failed to Find from %v, error: %v", INVOICES_COLLECTION, err)
 	}
 
 	// Unpacks the cursor into a slice
