@@ -1,0 +1,12 @@
+services:
+  mongodb:
+    image: mongo:8.0.12
+    container_name: mongodb_8_0_12
+    volumes:
+      - ./mongodb/initdb.d/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      - ./data:/data/db/
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: 'root'
+      MONGO_INITDB_ROOT_PASSWORD: 'password'
+    ports:
+      - 27017:27017
