@@ -85,7 +85,9 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/grpclog"
 
-	pb "golang-learning/market_place/pb" // Update
+	"golang-learning/market_place/controllers"
+	pb "golang-learning/market_place/pb"
+	"golang-learning/market_place/services"
 )
 
 var (
@@ -93,17 +95,6 @@ var (
 	grpcPort = flag.Int("grpc_port", 8080, "The gRPC server port")
 	httpPort = flag.Int("http_port", 8081, "The http server port")
 )
-
-// server is used to implement helloworld.GreeterServer.
-type server struct {
-	pb.UnimplementedGreeterServer
-}
-
-// SayHello implements helloworld.GreeterServer
-func (s *server) SayHello(_ context.Context, in *pb.HelloRequest) (*pb.HelloResponse, error) {
-	log.Printf("Received: %v", in.GetName())
-	return &pb.HelloResponse{Message: "Hello " + in.GetName()}, nil
-}
 
 func grpcServer() {
 	flag.Parse()
@@ -115,8 +106,12 @@ func grpcServer() {
 	}
 
 	// start the server
+	// Dependency injection
+	greeterService := services.NewGreeterService()
+	greeterController := controllers.NewGreeterController(greeterService)
+
 	s := grpc.NewServer()
-	pb.RegisterGreeterServer(s, &server{})
+	pb.RegisterGreeterServer(s, greeterController)
 	log.Printf("server listening at %v", lis.Addr())
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
