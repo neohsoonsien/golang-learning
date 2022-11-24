@@ -37,7 +37,7 @@ type Event struct {
 
 func main() {
 
-	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI("mongodb+srv://username:password@project.ls4g1.mongodb.net/events?retryWrites=true&w=majority"))
+	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI("mongodb://root:1qazZAQ!@localhost:27017/events"))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -68,24 +68,31 @@ func main() {
 
 	var numSenderDiff uint = 0
 	var numReceiverDiff uint = 0
+	var numValueDiff uint = 0
+	var eventSizeNotFulfill uint = 0
 	for _, event := range results {
 		var sender string = event.Sender
-		var receiver string = event.Receiver
+		var receiver string = event.MethodParams["recipient"]
+		var amount string = event.Value
 		var from string = event.Events[0].EventParams["from"]
 		var to string = event.Events[0].EventParams["to"]
+		var eventValue string = event.Events[0].EventParams["value"]
 
 		if sender != from {
 			numSenderDiff++
-
 		} else if receiver != to {
 			numReceiverDiff++
+		} else if amount != eventValue {
+			numValueDiff++
+		}
+
+		if len(event.Events) != 1 {
+			eventSizeNotFulfill++
 		}
 	}
 	fmt.Println("There are a total number of ", len(results), "LCUSD transactions.")
-	fmt.Println("The sender and event sender are different: ", numSenderDiff)
+	fmt.Println("The sender and event from are different: ", numSenderDiff)
 	fmt.Println("The receiver and event to are different: ", numReceiverDiff)
-
-	// var test TransactionEvent
-	// err = bson.Unmarshal(doc, &test)
-	// fmt.Printf("Unmarshalled Struct:\n%+v\n", test)
+	fmt.Println("The amount and event value do not tally: ", numValueDiff)
+	fmt.Println("The event.EventParams not equal to 1: ", eventSizeNotFulfill)
 }
