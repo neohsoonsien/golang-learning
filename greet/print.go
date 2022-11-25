@@ -2,6 +2,6 @@ package greet
 
 import "fmt"
 
-func print() {
+func Print() {
 	fmt.Println("Hello, how are you?")
 }
