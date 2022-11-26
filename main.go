@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	"golang-learning/greet"
+	"golang-learning/math"
 )
 
 func main() {
 	fmt.Println("This is the main function.")
-	greet.Print()
+	fmt.Println(math.Sum(10))
 }
