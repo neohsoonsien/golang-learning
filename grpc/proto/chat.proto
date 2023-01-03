@@ -1,11 +1,21 @@
 syntax = "proto3";
-package chat;
-option go_package="../../grpc/proto";
 
-message Message {
-  string body = 1;
+option go_package = "golang-learning/grpc/proto";
+
+package grpc;
+
+// The greeting service definition.
+service Greeter {
+  // Sends a greeting
+  rpc SayHello (HelloRequest) returns (HelloReply) {}
 }
 
-service ChatService {
-  rpc SayHello(Message) returns (Message) {}
+// The request message containing the user's name.
+message HelloRequest {
+  string name = 1;
+}
+
+// The response message containing the greetings
+message HelloReply {
+  string message = 1;
 }

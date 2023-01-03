@@ -1,26 +1,27 @@
-package main
+package grpc
 
 import (
-	"log"
-	"net"
+	"fmt"
+	// "log"
+	// "net"
 
-	"golang-learning/grpc"
-	"google.golang.org/grpc"
+	// "google.golang.org/grpc"
 )
 
-func main() {
-	listener, err := net.Listen("tcp", ":9000")
-	if err != nil {
-		log.Fatalf("Failed to listen: %v", err)
-	}
+func Server() {
+	fmt.Println("gRPC module")
+	// listener, err := net.Listen("tcp", ":9000")
+	// if err != nil {
+	// 	log.Fatalf("Failed to listen: %v", err)
+	// }
 
-	s := chat.Server{}
+	// s := chat.Server{}
 
-	grpcServer := grpc.NewServer()
+	// grpcServer := grpc.NewServer()
 
-	chat.RegisterChatServiceServer(grpcServer, &s)
+	// chat.RegisterChatServiceServer(grpcServer, &s)
 
-	if err := grpcServer.Serve(listener); err != nil {
-		log.Fatalf("Failed to serve: %s", err)
-	}
+	// if err := grpcServer.Serve(listener); err != nil {
+	// 	log.Fatalf("Failed to serve: %s", err)
+	// }
 }

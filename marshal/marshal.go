@@ -1,4 +1,4 @@
-package main
+package marshal
 
 import (
     "fmt"
@@ -17,7 +17,7 @@ type Data struct {
 	Value		[]User	`json:"value"`
 }
 
-func main() {
+func Marshal() {
 	// define array to collect the json object
 	array := []User{}
 	array = append(array, User{"John", 29, true})
