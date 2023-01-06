@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option go_package = "golang-learning/grpc/proto";
+option go_package = "."; // compile protobuff into this directory
 
 package grpc;
 
