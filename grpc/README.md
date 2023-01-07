@@ -19,6 +19,18 @@
     ```
 2.  Generate the _go_ specific **gRPC** code using the _protoc_ tool
     ```bash
+        cd <PATH>golang-learning/grpc/proto/
         protoc --go_out=. --go-grpc_out=. chat.proto
+    ```
+3.  The _server_ could be setup by just running the command from the parent project directory
+    ```bash
+        cd <PATH>golang-learning/
+        go run main.go
+    ```
+    The `golang-learning/grpc` package has already been importd into the _main.go_.
+4.  In order to run the _client_, one has to go to the project folder and execute `client.go` from there
+    ```bash
+        cd <PATH>/golang-learning/grpc/client/
+        go run client.go
     ```
 
