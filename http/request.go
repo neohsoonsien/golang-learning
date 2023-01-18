@@ -1,4 +1,4 @@
-package http
+package main
 
 import (
 	"fmt"
@@ -30,20 +30,23 @@ type WalletType struct {
 	WalletId		string		`json:"WalletId"`
 }
 
+type Wallet struct {
+	Wallet			[]WalletType		`json:"wallet"`
+}
+
+type Wallets struct {
+	Wallets			Wallet			    `json:"wallets"`
+}
+
 type ErrorType struct {
 	Code		string    	`json:"code"`
 	Message		string 		`json:"message"`
 	Type		string		`json:"type"`
 }
 
-type WalletArray struct {
-	Wallet			WalletType		`json:"wallet"`
+type Error struct {
 	Error			ErrorType		`json:"error"`
 }
-
-const (
-	baseUrl = "baseUrl"
-)
 
 // create a http/client once only, and reuse the TCP connection for all the functions
 func httpClient() *http.Client {
@@ -53,14 +56,14 @@ func httpClient() *http.Client {
 
 func GetClientToken(client *http.Client, grpcNonce string) (string, error) {
 	
-	url := baseUrl + "/api/auth/GetClientToken"
-
-    request, err := http.NewRequest(http.MethodGet, url, nil)
-
 	// load .env file
 	if err := godotenv.Load(".env"); err != nil {
 		fmt.Println(".env loading failure")
 	}
+
+	url := os.Getenv("BASE_URL") + "/api/auth/GetClientToken"
+
+    request, err := http.NewRequest(http.MethodGet, url, nil)
 
     request.Header.Set("Authorization", os.Getenv("CREDENTIAL"))
     request.Header.Set("Accept", "*/*")
@@ -86,9 +89,14 @@ func GetClientToken(client *http.Client, grpcNonce string) (string, error) {
 	return clientToken.AccessToken, nil
 }
 
-func InsertWallet(client *http.Client, accessToken string, customerId string) (WalletArray, error) {
+func GenerateDepositWallet(client *http.Client, accessToken string, customerId string) (WalletType, ErrorType, error) {
 
-	url := baseUrl + "/api/wallets"
+	// load .env file
+	if err := godotenv.Load(".env"); err != nil {
+		fmt.Println(".env loading failure")
+	}
+
+	url := os.Getenv("BASE_URL") + "/api/wallets"
 
 	value := map[string]string{"CustomerId": customerId, "WalletType": "Deposit"}
 	jsonData, err := json.Marshal(value)
@@ -104,40 +112,84 @@ func InsertWallet(client *http.Client, accessToken string, customerId string) (W
 	// make request to insert wallet for customerId
 	response, err := client.Do(request)
 	if err != nil {
-		return WalletArray{WalletType{"", "", "", ""}, ErrorType{"", "Failed to get response from InsertWallet", ""}}, 
+		return WalletType{"", "", "", ""}, 
+				ErrorType{"", "Failed to get response from InsertWallet", ""},
 				errors.New("Failed to get response from InsertWallet")
 	}
 	defer response.Body.Close()
 	body, err := io.ReadAll(response.Body)
 
 	// Unmarshal the body into json
-	var wallets WalletArray
+	var wallets Wallet
 	err = json.Unmarshal(body, &wallets)
 	if err != nil {
-		return WalletArray{WalletType{"", "", "", ""}, ErrorType{"", "Failed to parse Wallet into json", ""}}, 
+		return WalletType{"", "", "", ""}, 
+				ErrorType{"", "Failed to parse Wallet into json", ""},
 				errors.New("Failed to parse Wallet into json")
-	} else if wallets.Error.Code == "15" {
-		return WalletArray{WalletType{"", "", "", ""}, ErrorType{"", "Wallet limit reached", ""}},
+	} else if wallets.Code == "15" {
+		return WalletType{"", "", "", ""}, 
+				ErrorType{"", "Wallet limit reached", ""},
 				errors.New("Wallet limit reached")
 	}
 	fmt.Printf("%+v\n", wallets)
 
-	return wallets, nil
+	return wallets, Error, nil
 }
 
-func TestPrintToken(t *testing.T) {
+func TestCreateDepositWallets(t *testing.T) {
 
 	client := httpClient()
 	// grpcNonce has to be changed every time before te existing one expires
-	accessToken, _ := GetClientToken(client, "123")
+	grpcNonce := "122"
+	accessToken, _ := GetClientToken(client, grpcNonce)
 
-	// walletId = 200-1200 are used for this test
-	walletArray := make([]WalletArray, 0)	
-	for customer := 200; customer < 1200; customer++ {
-		walletAddress, err := InsertWallet(client, accessToken, strconv.Itoa(customer))
+	// walletId = 200-1199 are used for this test
+	walletArray := make([]Wallet, 0)
+	for customer := 230; customer < 300; customer++ {
+		walletAddress, error, err := GenerateDepositWallet(client, accessToken, strconv.Itoa(customer))
 		if err != nil {
 			fmt.Println(err)
 		}
 		walletArray = append(walletArray, walletAddress)
+	}
+}
+
+func TestGetDepositWallets(t *testing.T) {
+	// load .env file
+	if err := godotenv.Load(".env"); err != nil {
+		fmt.Println(".env loading failure")
+	}
+
+	client := httpClient()
+	grpcNonce := "122"
+	accessToken, _ := GetClientToken(client, grpcNonce)
+
+	// walletId = 200-1199 are used for this test
+	// walletArray := make([]WalletArray, 0)
+	for customer := 200; customer < 300; customer++ {
+		url := os.Getenv("BASE_URL") + "/api/wallets/" + strconv.Itoa(customer)
+
+		request, err := http.NewRequest(http.MethodGet, url, nil)
+		if err != nil {
+			fmt.Printf("Failed to get wallet address for Customer Id: %v", customer)
+		}
+		request.Header.Set("Authorization", "bearer " + accessToken)
+		request.Header.Set("Accept-Encoding", "gzip, deflate, br")
+		request.Header.Set("Accept", "*/*")
+		request.Header.Set("Connection", "keep-alive")
+		request.Header.Set("Content-Type", "application/json")
+
+		// make request to insert wallet for customerId
+		response, err := client.Do(request)
+		if err != nil {
+			fmt.Println(err)
+		}
+		defer response.Body.Close()
+		body, err := io.ReadAll(response.Body)
+
+		// Unmarshal the body into json
+		var wallets WalletResponse
+		err = json.Unmarshal(body, &wallets)
+		fmt.Println(wallets)
 	}
 }
