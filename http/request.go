@@ -31,11 +31,15 @@ type WalletType struct {
 }
 
 type Wallet struct {
+	Wallet			WalletType			`json:"wallet"`
+}
+
+type WalletArray struct {
 	Wallet			[]WalletType		`json:"wallet"`
 }
 
 type Wallets struct {
-	Wallets			Wallet			    `json:"wallets"`
+	Wallets			WalletArray			`json:"wallets"`
 }
 
 type ErrorType struct {
@@ -89,7 +93,7 @@ func GetClientToken(client *http.Client, grpcNonce string) (string, error) {
 	return clientToken.AccessToken, nil
 }
 
-func GenerateDepositWallet(client *http.Client, accessToken string, customerId string) (WalletType, ErrorType, error) {
+func GenerateDepositWallet(client *http.Client, accessToken string, customerId string) (Wallet, error) {
 
 	// load .env file
 	if err := godotenv.Load(".env"); err != nil {
@@ -112,28 +116,23 @@ func GenerateDepositWallet(client *http.Client, accessToken string, customerId s
 	// make request to insert wallet for customerId
 	response, err := client.Do(request)
 	if err != nil {
-		return WalletType{"", "", "", ""}, 
-				ErrorType{"", "Failed to get response from InsertWallet", ""},
+		return Wallet{WalletType{"", "", "", ""}}, 
 				errors.New("Failed to get response from InsertWallet")
 	}
 	defer response.Body.Close()
 	body, err := io.ReadAll(response.Body)
 
 	// Unmarshal the body into json
-	var wallets Wallet
-	err = json.Unmarshal(body, &wallets)
+	var wallet Wallet
+	err = json.Unmarshal(body, &wallet)
 	if err != nil {
-		return WalletType{"", "", "", ""}, 
-				ErrorType{"", "Failed to parse Wallet into json", ""},
-				errors.New("Failed to parse Wallet into json")
-	} else if wallets.Code == "15" {
-		return WalletType{"", "", "", ""}, 
-				ErrorType{"", "Wallet limit reached", ""},
+		return Wallet{WalletType{"", "", "", ""}},
 				errors.New("Wallet limit reached")
 	}
-	fmt.Printf("%+v\n", wallets)
 
-	return wallets, Error, nil
+	fmt.Println(wallet)
+
+	return wallet, nil
 }
 
 func TestCreateDepositWallets(t *testing.T) {
@@ -145,8 +144,8 @@ func TestCreateDepositWallets(t *testing.T) {
 
 	// walletId = 200-1199 are used for this test
 	walletArray := make([]Wallet, 0)
-	for customer := 230; customer < 300; customer++ {
-		walletAddress, error, err := GenerateDepositWallet(client, accessToken, strconv.Itoa(customer))
+	for customer := 1100; customer < 1200; customer++ {
+		walletAddress, err := GenerateDepositWallet(client, accessToken, strconv.Itoa(customer))
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -155,25 +154,24 @@ func TestCreateDepositWallets(t *testing.T) {
 }
 
 func TestGetDepositWallets(t *testing.T) {
+
 	// load .env file
 	if err := godotenv.Load(".env"); err != nil {
 		fmt.Println(".env loading failure")
 	}
 
 	client := httpClient()
-	grpcNonce := "122"
-	accessToken, _ := GetClientToken(client, grpcNonce)
 
 	// walletId = 200-1199 are used for this test
-	// walletArray := make([]WalletArray, 0)
-	for customer := 200; customer < 300; customer++ {
+	walletArray := make([]string, 0)
+	for customer := 300; customer < 310; customer++ {
 		url := os.Getenv("BASE_URL") + "/api/wallets/" + strconv.Itoa(customer)
 
 		request, err := http.NewRequest(http.MethodGet, url, nil)
 		if err != nil {
-			fmt.Printf("Failed to get wallet address for Customer Id: %v", customer)
+			fmt.Printf("Failed to create wallet address request for Customer Id: %v", customer)
 		}
-		request.Header.Set("Authorization", "bearer " + accessToken)
+		request.Header.Set("Authorization", "bearer " + "6cfe0c65-62a9-4f90-88de-e3c332fa3bb2")
 		request.Header.Set("Accept-Encoding", "gzip, deflate, br")
 		request.Header.Set("Accept", "*/*")
 		request.Header.Set("Connection", "keep-alive")
@@ -186,10 +184,14 @@ func TestGetDepositWallets(t *testing.T) {
 		}
 		defer response.Body.Close()
 		body, err := io.ReadAll(response.Body)
+		if err != nil {
+			fmt.Println("Failed to get response from InsertWallet")
+		}
 
 		// Unmarshal the body into json
-		var wallets WalletResponse
+		var wallets Wallets
 		err = json.Unmarshal(body, &wallets)
-		fmt.Println(wallets)
+		walletArray = append(walletArray, wallets.Wallets.Wallet[0].WalletAddress)
 	}
+	fmt.Println(len(walletArray))
 }
