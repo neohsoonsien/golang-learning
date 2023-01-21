@@ -3,14 +3,16 @@ package main
 import (
 	"fmt"
 	"golang-learning/math"
-	"golang-learning/grpc"
+	// "golang-learning/grpc"
 	"golang-learning/marshal"
+	"golang-learning/mapping"
 )
 
 func main() {
 	fmt.Println("This is the main function.")
 	fmt.Println(math.Sum(10))
 
-	grpc.Server()
+	// grpc.Server()
 	marshal.Marshal()
+	mapping.Map()
 }
