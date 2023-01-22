@@ -4,7 +4,12 @@ import (
 	"fmt"
 )
 
-func Map() {
+type Student struct {
+    Name 		string		`json:"name"`
+    Id			string		`json:"id"`
+}
+
+func Map(name string, id string) (map[string]*Student) {
 	// create empty map
 	array := make(map[string]int)
 
@@ -20,4 +25,10 @@ func Map() {
 	// return index of a key/value pairs with exist check
 	index, exist := array["one"]
     fmt.Println("index: ", index, "value: ", exist)
+
+	// declare studentList
+	studentList := make(map[string]*Student, 0)
+	studentList[name] = &Student{name, id}
+
+	return studentList
 }

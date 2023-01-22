@@ -14,5 +14,5 @@ func main() {
 
 	// grpc.Server()
 	marshal.Marshal()
-	mapping.Map()
+	fmt.Println(mapping.Map("Lily", "C5678")["Lily"])
 }
