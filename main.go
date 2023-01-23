@@ -6,6 +6,7 @@ import (
 	// "golang-learning/grpc"
 	"golang-learning/marshal"
 	"golang-learning/mapping"
+	"golang-learning/csv"
 )
 
 func main() {
@@ -15,4 +16,6 @@ func main() {
 	// grpc.Server()
 	marshal.Marshal()
 	fmt.Println(mapping.Map("Lily", "C5678")["Lily"])
+
+	csv.Write()
 }
