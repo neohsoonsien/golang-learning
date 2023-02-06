@@ -7,6 +7,7 @@ import (
 	"golang-learning/marshal"
 	"golang-learning/mapping"
 	"golang-learning/csv"
+	"golang-learning/ioutil"
 )
 
 func main() {
@@ -18,4 +19,6 @@ func main() {
 	fmt.Println(mapping.Map("Lily", "C5678")["Lily"])
 
 	csv.Write()
+
+	ioutil.Directory()
 }
