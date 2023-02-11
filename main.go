@@ -8,6 +8,7 @@ import (
 	"golang-learning/mapping"
 	"golang-learning/csv"
 	"golang-learning/ioutil"
+	"golang-learning/test"
 )
 
 func main() {
@@ -21,4 +22,6 @@ func main() {
 	csv.Write()
 
 	ioutil.Directory()
+
+	fmt.Println(test.Greet("James"))
 }
