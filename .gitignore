@@ -2,3 +2,4 @@ grpc/proto/*.pb.go
 */.env
 *.json
 *.csv
+.env

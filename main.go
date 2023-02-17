@@ -9,6 +9,8 @@ import (
 	"golang-learning/csv"
 	"golang-learning/ioutil"
 	"golang-learning/test"
+	"golang-learning/mongodb"
+	"golang-learning/argument"
 )
 
 func main() {
@@ -24,4 +26,8 @@ func main() {
 	ioutil.Directory()
 
 	fmt.Println(test.Greet("James"))
+
+	mongodb.Aggregate()
+	
+	argument.Output()
 }
