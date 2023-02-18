@@ -11,6 +11,7 @@ import (
 	"golang-learning/test"
 	"golang-learning/mongodb"
 	"golang-learning/argument"
+	"golang-learning/logger"
 )
 
 func main() {
@@ -30,4 +31,6 @@ func main() {
 	mongodb.Aggregate()
 	
 	argument.Output()
+
+	logger.Logger()
 }
