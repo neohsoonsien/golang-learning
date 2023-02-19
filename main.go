@@ -28,9 +28,11 @@ func main() {
 
 	fmt.Println(test.Greet("James"))
 
-	mongodb.Aggregate()
-	
+	// mongodb.Insert()
+
 	argument.Output()
 
 	logger.Logger()
+
+	mongodb.Find()
 }

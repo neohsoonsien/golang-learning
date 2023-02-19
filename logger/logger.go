@@ -20,5 +20,5 @@ func PrintLog(log *zap.Logger) {
 	logger := log.Sugar()
 
 	fmt.Println("Logger Package")
-	logger.Infof("This is the Zap Suger log")
+	logger.Infof("This is the Zap Sugar log")
 }
