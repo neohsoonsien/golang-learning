@@ -15,7 +15,7 @@ import (
 	"fmt"
 )
 
-type Menu struct {
+type MenuType struct {
 	MenuId			primitive.ObjectID `bson:"_id"`
 	Name		    uint64             `json:"name"`
 	Category        string             `json:"category"`
