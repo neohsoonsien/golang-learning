@@ -67,13 +67,27 @@ type ConversionNode struct {
 	Amount  []AgeAmount        `json:"Amount"`
 }
 
+type Nft struct {
+	NftId 			primitive.ObjectID `bson:"_id"`
+	Contract     	string             `json:"contract"`
+	BaseURI         string             `json:"baseURI"`
+	TokenURI        string             `json:"tokenURI"`
+	TokenId         string             `json:"tokenId"`
+	Metadata        string             `json:"metadata"`
+}
+
+type Criteria struct {
+	token			string
+	tokenid			string
+}
+
 func ElementMatch() {
 
 	// ******************************************************* //
 	// Step 1: obtain the mongoURI connection string from .env file
 	// ******************************************************* //
 	godotenv.Load()
-	mongoURI := os.Getenv("MONGODB_URI")
+	mongoURI := os.Getenv("MONGODB_TRACKER_URI")
 
 	// initialize logger
 	logger := zap.NewExample().Sugar()
@@ -85,23 +99,23 @@ func ElementMatch() {
 	// Step 2: connect to the mongodb
 	// ******************************************************* //
 	// Create a new client and connect to the server
-	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(mongoURI))
+	clientTracker, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(mongoURI))
 	if err != nil {
 		panic(err)
 	}
 	defer func() {
-		if err = client.Disconnect(context.TODO()); err != nil {
+		if err = clientTracker.Disconnect(context.TODO()); err != nil {
 			panic(err)
 		}
 	}()
 	// Ping the primary
-	if err := client.Ping(context.TODO(), readpref.Primary()); err != nil {
+	if err := clientTracker.Ping(context.TODO(), readpref.Primary()); err != nil {
 		panic(err)
 	}
-	fmt.Println("Successfully connected and pinged to Find.")
+	fmt.Println("Successfully connected to tracker collection.")
 
 
-	collection := client.Database("tracker").Collection("tracker_history")
+	collection := clientTracker.Database("tracker").Collection("tracker_history")
 	filter := bson.D{{"address", "0x5859AADB52d93D6AadA9D07301151443a866Cc4D"}}
 
 	// sort in descending order to return only the first element in the FindOne query
@@ -127,4 +141,42 @@ func ElementMatch() {
 	}
 	fmt.Printf("%s\n", output)
 	fmt.Printf("%v\n", result.BlockNumber)
+
+	for _, nftnode := range result.NftNodes {
+		fmt.Printf("%v,\t%v\n", nftnode.Token, nftnode.TokenId)
+	}
+
+
+	collection = clientTracker.Database("tracker").Collection("tracker")
+	enableDiskUse := true
+	option := &options.FindOptions{
+		AllowDiskUse: &enableDiskUse,
+	}
+
+	criteria := Criteria{
+		token: "0xEA6EE9730609AC46D8d59F69ec576E27DDFE19C5",
+		tokenid: "1461523938416383821135279884712579639185445486593",
+	}
+
+	filter = bson.D{{"nftnodes", bson.D{{"$elemMatch", criteria}}}}
+
+	cursor, err := collection.Find(context.TODO(), filter, option)
+	if err != nil {
+		panic(err)
+	}
+	// end find
+							
+	var trackerNodes []TrackerNode
+	if err = cursor.All(context.TODO(), &trackerNodes); err != nil {
+		panic(err)
+	}
+							
+	for _, tracker := range trackerNodes {
+		cursor.Decode(&tracker)
+		output, err := json.MarshalIndent(tracker, "", "    ")
+		if err != nil {
+			panic(err)
+		}
+		fmt.Printf("%s\n", output)
+	}
 }
