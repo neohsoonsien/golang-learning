@@ -9,7 +9,7 @@ type Student struct {
     Id			string		`json:"id"`
 }
 
-func Map(name string, id string) (map[string]*Student) {
+func MapStudent(name string, id string) (map[string]*Student) {
 	// create empty map
 	array := make(map[string]int)
 
