@@ -20,7 +20,8 @@ func main() {
 
 	// grpc.Server()
 	marshal.Marshal()
-	fmt.Println(mapping.Map("Lily", "C5678")["Lily"])
+	fmt.Println(mapping.MapStudent("Lily", "C5678")["Lily"])
+	fmt.Println(mapping.MapList())
 
 	csv.Write()
 
@@ -36,5 +37,7 @@ func main() {
 
 	// mongodb.Insert()
 
-	mongodb.ElementMatch()
+	mongodb.Aggregate()
+	
+	// mongodb.ElementMatch()
 }
