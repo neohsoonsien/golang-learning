@@ -37,7 +37,9 @@ func main() {
 
 	// mongodb.Insert()
 
-	mongodb.Aggregate()
+	mongodb.And()
+
+	// mongodb.Aggregate()
 	
 	// mongodb.ElementMatch()
 }
