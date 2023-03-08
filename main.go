@@ -9,7 +9,7 @@ import (
 	"golang-learning/csv"
 	"golang-learning/ioutil"
 	"golang-learning/test"
-	"golang-learning/mongodb"
+	// "golang-learning/mongodb"
 	"golang-learning/argument"
 	"golang-learning/logger"
 )
@@ -20,6 +20,7 @@ func main() {
 
 	// grpc.Server()
 	marshal.Marshal()
+	fmt.Println(mapping.MapStruct())
 	fmt.Println(mapping.MapStudent("Lily", "C5678")["Lily"])
 	fmt.Println(mapping.MapList())
 
@@ -37,7 +38,7 @@ func main() {
 
 	// mongodb.Insert()
 
-	mongodb.And()
+	// mongodb.And()
 
 	// mongodb.Aggregate()
 	
