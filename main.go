@@ -9,7 +9,7 @@ import (
 	"golang-learning/csv"
 	"golang-learning/ioutil"
 	"golang-learning/test"
-	// "golang-learning/mongodb"
+	"golang-learning/mongodb"
 	"golang-learning/argument"
 	"golang-learning/logger"
 )
@@ -43,4 +43,6 @@ func main() {
 	// mongodb.Aggregate()
 	
 	// mongodb.ElementMatch()
+
+	mongodb.UpdateMany()
 }
