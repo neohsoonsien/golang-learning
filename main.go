@@ -9,9 +9,10 @@ import (
 	"golang-learning/csv"
 	"golang-learning/ioutil"
 	"golang-learning/test"
-	"golang-learning/mongodb"
+	// "golang-learning/mongodb"
 	"golang-learning/argument"
 	"golang-learning/logger"
+	"golang-learning/redis"
 )
 
 func main() {
@@ -44,5 +45,7 @@ func main() {
 	
 	// mongodb.ElementMatch()
 
-	mongodb.UpdateMany()
+	// mongodb.UpdateMany()
+
+	redis.GetStudent()
 }
