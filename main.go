@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"golang-learning/math"
-	// "golang-learning/grpc"
 	"golang-learning/marshal"
 	"golang-learning/mapping"
 	"golang-learning/csv"
@@ -19,7 +18,6 @@ func main() {
 	fmt.Println("This is the main function.")
 	fmt.Println(math.Sum(10))
 
-	// grpc.Server()
 	marshal.Marshal()
 	fmt.Println(mapping.MapStruct())
 	fmt.Println(mapping.MapStudent("Lily", "C5678")["Lily"])

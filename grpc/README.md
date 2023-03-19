@@ -1,4 +1,4 @@
-## Prerequisite
+## Prerequisites
 1.  One should have installed the following packages:
     -   `go`: `/usr/local/go/bin`
     -   `protoc`: `/usr/local/bin`
@@ -22,12 +22,11 @@
         cd <PATH>golang-learning/grpc/proto/
         protoc --go_out=. --go-grpc_out=. chat.proto
     ```
-3.  The _server_ could be setup by just running the command from the parent project directory
+3.  The _server_ could be setup by just running the command from the project directory
     ```bash
-        cd <PATH>golang-learning/
-        go run main.go
+        cd <PATH>/golang-learning/grpc/server/
+        go run server.go
     ```
-    The `golang-learning/grpc` package has already been importd into the _main.go_.
 4.  In order to run the _client_, one has to go to the project folder and execute `client.go` from there
     ```bash
         cd <PATH>/golang-learning/grpc/client/
