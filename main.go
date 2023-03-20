@@ -12,6 +12,7 @@ import (
 	"golang-learning/argument"
 	"golang-learning/logger"
 	"golang-learning/redis"
+	"golang-learning/slice"
 )
 
 func main() {
@@ -46,4 +47,6 @@ func main() {
 	// mongodb.UpdateMany()
 
 	redis.GetStudent()
+
+	slice.Slice()
 }
