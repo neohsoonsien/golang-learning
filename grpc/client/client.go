@@ -33,9 +33,18 @@ func main() {
 	// Contact the server and print out its response.
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-	r, err := c.SayHello(ctx, &pb.HelloRequest{Name: *name})
+
+	// test SayHello function
+	sayHello, err := c.SayHello(ctx, &pb.HelloRequest{Name: *name})
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}
-	log.Printf("Greeting: %s", r.GetMessage())
+	log.Printf("Greeting: %s", sayHello.GetMessage())
+
+	// test Classroom function
+	classroom, err := c.Classroom(ctx, &pb.ClassroomRequest{Name: "James", Id: "C2341"})
+	if err != nil {
+		log.Fatalf("could not find classroom: %v", err)
+	}
+	log.Printf("Classroom: %s", classroom.GetClassroom())
 }
