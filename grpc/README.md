@@ -19,7 +19,7 @@
     ```
 2.  Generate the _go_ specific **gRPC** code using the _protoc_ tool
     ```bash
-        cd <PATH>golang-learning/grpc/proto/
+        cd <PATH>/golang-learning/grpc/proto/
         protoc --go_out=. --go-grpc_out=. chat.proto
     ```
 3.  The _server_ could be setup by just running the command from the project directory
