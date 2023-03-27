@@ -31,6 +31,10 @@ func (s *server) Classroom(ctx context.Context, in *pb.ClassroomRequest) (*pb.Cl
 	log.Printf("Student name: %v, student Id: %v", in.GetName(), in.GetId())
 	// hard-code a classroom value
 	classroom := "1T10"
+	num := pb.StudentStatus_value["ACTIVE"]
+	value := pb.StudentStatus(num)
+	fmt.Printf("The key of the StudentStatus is %v \n", num)
+	fmt.Printf("The StudentStatus is %v \n", value)
 	return &pb.ClassroomResponse{Classroom: classroom}, nil
 }
 

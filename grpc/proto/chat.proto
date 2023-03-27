@@ -28,6 +28,13 @@ message ClassroomRequest {
   string id = 2;
 }
 
+enum StudentStatus {
+  UNKNOWN = 0;
+  ACTIVE = 1;
+  SUSPENDED = 2;
+  GRADUATED = 3;
+}
+
 // The response message containing the student's classroom
 message ClassroomResponse {
   string classroom = 1;
