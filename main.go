@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"golang-learning/auth"
 	"golang-learning/math"
 	"golang-learning/marshal"
 	"golang-learning/mapping"
@@ -11,7 +12,7 @@ import (
 	// "golang-learning/mongodb"
 	"golang-learning/argument"
 	"golang-learning/logger"
-	"golang-learning/redis"
+	// "golang-learning/redis"
 	"golang-learning/slice"
 )
 
@@ -46,7 +47,9 @@ func main() {
 
 	// mongodb.UpdateMany()
 
-	redis.GetStudent()
+	// redis.GetStudent()
 
 	slice.Slice()
+
+	auth.Auth()
 }
