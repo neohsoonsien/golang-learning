@@ -51,5 +51,7 @@ func main() {
 
 	slice.Slice()
 
-	auth.Auth()
+	// auth.Auth()
+
+	auth.GrpcAuth()
 }
