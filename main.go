@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"golang-learning/asynchronous"
 	"golang-learning/auth"
 	"golang-learning/math"
 	"golang-learning/marshal"
@@ -54,4 +55,6 @@ func main() {
 	// auth.Auth()
 
 	auth.GrpcAuth()
+
+	asynchronous.Asynchronous()
 }
