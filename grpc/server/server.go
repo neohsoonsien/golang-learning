@@ -38,16 +38,42 @@ func (s *server) Classroom(ctx context.Context, in *pb.ClassroomRequest) (*pb.Cl
 	return &pb.ClassroomResponse{Classroom: classroom}, nil
 }
 
+// Greeting function
+func (s *server) Greet(ctx context.Context, req *pb.GreetRequest) (*pb.GreetResponse, error) {
+
+	log.Println("User name: ", req.Username)
+	log.Println("Country code: ", req.CountryCode)
+
+	var greeting string
+
+	switch req.CountryCode {
+	case "us":
+		greeting = "hello " + req.Username
+	case "mx":
+		greeting = "Hola " + req.Username
+	default:
+		greeting = "Hola/Hello " + req.Username
+	}
+
+	return &pb.GreetResponse{
+		Result: greeting,
+	}, nil
+}
+
 func main() {
 	flag.Parse()
-	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", *port))
+
+	listener, err := net.Listen("tcp", fmt.Sprintf(":%d", *port))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
+
+	log.Printf("server listening at %v", listener.Addr())
+	
 	s := grpc.NewServer()
 	pb.RegisterGreeterServer(s, &server{})
-	log.Printf("server listening at %v", lis.Addr())
-	if err := s.Serve(lis); err != nil {
+	
+	if err := s.Serve(listener); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
 }

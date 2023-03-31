@@ -10,6 +10,9 @@ service Greeter {
   rpc SayHello (HelloRequest) returns (HelloResponse) {}
 
   rpc Classroom (ClassroomRequest) returns (ClassroomResponse) {}
+
+  // unary
+  rpc Greet(GreetRequest) returns (GreetResponse) {}
 }
 
 // The request message containing the user's name.
@@ -38,4 +41,13 @@ enum StudentStatus {
 // The response message containing the student's classroom
 message ClassroomResponse {
   string classroom = 1;
+}
+
+message GreetRequest {
+  string countryCode = 1;
+  string username = 2;
+}
+
+message GreetResponse {
+  string result = 1;
 }
