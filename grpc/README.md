@@ -19,6 +19,11 @@
     ```
 2.  Generate the _go_ specific **gRPC** code using the _protoc_ tool
     ```bash
+        cd <PATH>/golang-learning/grpc/
+        protoc -I ./proto --go_out=./server --go-grpc_out=require_unimplemented_servers=false:./server --go_out=./client --go-grpc_out=require_unimplemented_servers=false:./client proto/chat.proto
+    ```
+    or
+    ```bash
         cd <PATH>/golang-learning/grpc/proto/
         protoc --go_out=. --go-grpc_out=. chat.proto
     ```

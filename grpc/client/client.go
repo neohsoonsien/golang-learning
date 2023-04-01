@@ -47,4 +47,25 @@ func main() {
 		log.Fatalf("could not find classroom: %v", err)
 	}
 	log.Printf("Classroom: %s", classroom.GetClassroom())
+
+	// test Greeting function
+	getGreeting("Jack", "us", c)
+	getGreeting("Jose", "mx", c)
+}
+
+func getGreeting(name string, countryCode string, c pb.GreeterClient) {
+
+	log.Println("creating greeting")
+
+	res, err := c.Greet(context.Background(), &pb.GreetRequest{
+		CountryCode: countryCode,
+		Username:    name,
+	})
+
+	if err != nil {
+		log.Println("error: ", err)
+		panic(err)
+	}
+
+	log.Println(res.Result)
 }
