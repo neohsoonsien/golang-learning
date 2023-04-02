@@ -2,15 +2,15 @@ package main
 
 import (
 	"fmt"
-	"golang-learning/asynchronous"
-	"golang-learning/auth"
+	// "golang-learning/asynchronous"
+	// "golang-learning/auth"
 	"golang-learning/math"
 	"golang-learning/marshal"
 	"golang-learning/mapping"
 	"golang-learning/csv"
 	"golang-learning/ioutil"
 	"golang-learning/test"
-	// "golang-learning/mongodb"
+	"golang-learning/mongodb"
 	"golang-learning/argument"
 	"golang-learning/logger"
 	// "golang-learning/redis"
@@ -54,7 +54,9 @@ func main() {
 
 	// auth.Auth()
 
-	auth.GrpcAuth()
+	// auth.GrpcAuth()
 
-	asynchronous.Asynchronous()
+	// asynchronous.Asynchronous()
+
+	mongodb.Group()
 }
