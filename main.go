@@ -10,7 +10,8 @@ import (
 	"golang-learning/csv"
 	"golang-learning/ioutil"
 	"golang-learning/test"
-	"golang-learning/mongodb"
+	// "golang-learning/mongodb"
+	"golang-learning/outer"
 	"golang-learning/argument"
 	"golang-learning/logger"
 	// "golang-learning/redis"
@@ -62,5 +63,7 @@ func main() {
 
 	// mongodb.Match()
 
-	mongodb.Sort()
+	// mongodb.Sort()
+
+	outer.Exit()
 }
