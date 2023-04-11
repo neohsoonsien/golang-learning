@@ -4,6 +4,7 @@ import (
 	"fmt"
 	// "golang-learning/asynchronous"
 	// "golang-learning/auth"
+	"golang-learning/boolean"
 	"golang-learning/math"
 	"golang-learning/marshal"
 	"golang-learning/mapping"
@@ -66,4 +67,6 @@ func main() {
 	// mongodb.Sort()
 
 	outer.Exit()
+
+	boolean.Boolean()
 }
