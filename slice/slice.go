@@ -21,19 +21,36 @@ func Slice() {
 
 	// Example 2: triple dots as argument / parameter in variadic function
 	slice = []int{1, 2, 3, 4, 5}
-	fmt.Println(Sum(slice...))
+	fmt.Println(sum(slice...))
 
 	// Example 3: append all the trailing elements into a slice
 	slice2 := []int{1, 7, 3}
 	fmt.Println(append(slice, slice2...))
+
+	// Example 4: pop and shift functions for the slice
+	var value int
+	value, shifted := shift(slice...)
+	fmt.Printf("The first element is %v, and the slice after shift operation is %v", value, shifted)
+	value, popped := pop(slice...)
+	fmt.Printf("The last element is %v, and the slice after pop operation is %v", value, popped)
 }
 
 // Variadic function parameters
-func Sum(array ...int) int {
-	var sum int
-	sum = 0
+func sum(array ...int) int {
+	var total int
+	total = 0
 	for _, elem := range array {
-		sum += elem
+		total += elem
 	}
-	return sum
+	return total
+}
+
+func shift(array ...int) (int, []int) {
+	first, array := array[0], array[1:]
+	return first, array
+}
+
+func pop(array ...int) (int, []int) {
+	last, array := array[len(array)-1], array[:len(array)-1]
+	return last, array
 }
