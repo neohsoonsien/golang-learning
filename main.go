@@ -9,6 +9,7 @@ import (
 	"golang-learning/marshal"
 	"golang-learning/mapping"
 	"golang-learning/csv"
+	"golang-learning/flagging"
 	"golang-learning/ioutil"
 	"golang-learning/test"
 	// "golang-learning/mongodb"
@@ -69,4 +70,6 @@ func main() {
 	outer.Exit()
 
 	boolean.Boolean()
+
+	flagging.DefineColor()
 }
