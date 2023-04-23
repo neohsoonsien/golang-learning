@@ -8,6 +8,7 @@ import (
 	"golang-learning/math"
 	"golang-learning/marshal"
 	"golang-learning/mapping"
+	"golang-learning/method_struct"
 	"golang-learning/csv"
 	"golang-learning/flagging"
 	"golang-learning/ioutil"
@@ -72,4 +73,6 @@ func main() {
 	boolean.Boolean()
 
 	flagging.DefineColor()
+
+	method_struct.Method()
 }
