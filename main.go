@@ -19,6 +19,7 @@ import (
 	"golang-learning/logger"
 	// "golang-learning/redis"
 	"golang-learning/slice"
+	"golang-learning/structs"
 )
 
 func main() {
@@ -75,4 +76,6 @@ func main() {
 	flagging.DefineColor()
 
 	method_struct.Method()
+
+	structs.Student()
 }
