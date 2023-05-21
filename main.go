@@ -20,6 +20,7 @@ import (
 	// "golang-learning/redis"
 	"golang-learning/slice"
 	"golang-learning/structs"
+	"golang-learning/unix_time"
 )
 
 func main() {
@@ -78,4 +79,6 @@ func main() {
 	method_struct.Method()
 
 	structs.Student()
+
+	fmt.Printf("Time now in miliseconds: %v, time now in nanosecond: %v.", unix_time.UnixMilli(), unix_time.UnixNano())
 }
