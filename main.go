@@ -31,6 +31,7 @@ func main() {
 	fmt.Println(mapping.MapStruct())
 	fmt.Println(mapping.MapStudent("Lily", "C5678")["Lily"])
 	fmt.Println(mapping.MapList())
+	fmt.Println(mapping.MapString())
 
 	csv.Write()
 

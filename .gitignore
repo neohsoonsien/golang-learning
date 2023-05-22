@@ -1,5 +1,5 @@
-grpc/*/*.pb.go
-grpc/*/*/*.pb.go
+grpc*/*/*.pb.go
+grpc*/*/*/*.pb.go
 */.env
 *.json
 *.csv

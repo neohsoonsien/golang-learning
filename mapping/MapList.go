@@ -16,3 +16,13 @@ func MapList() (map[string][]string) {
     
 	return m
 }
+
+func MapString() (map[string]string) {
+    m := map[string]string{
+        "A": "Dog",
+        "B": "Cat",
+        "C": "Cow",
+    }
+
+    return m
+}
