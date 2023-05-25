@@ -4,6 +4,7 @@ import (
 	"fmt"
 	// "golang-learning/asynchronous"
 	// "golang-learning/auth"
+	"golang-learning/array"
 	"golang-learning/boolean"
 	"golang-learning/math"
 	"golang-learning/marshal"
@@ -24,6 +25,7 @@ import (
 )
 
 func main() {
+	array.Array()
 	fmt.Println("This is the main function.")
 	fmt.Println(math.Sum(10))
 
