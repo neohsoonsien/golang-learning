@@ -18,6 +18,7 @@ import (
 	"golang-learning/outer"
 	"golang-learning/argument"
 	"golang-learning/logger"
+	"golang-learning/pointer"
 	// "golang-learning/redis"
 	"golang-learning/slice"
 	"golang-learning/structs"
@@ -52,7 +53,7 @@ func main() {
 	// mongodb.And()
 
 	// mongodb.Aggregate()
-	
+
 	// mongodb.ElementMatch()
 
 	// mongodb.UpdateMany()
@@ -80,6 +81,8 @@ func main() {
 	flagging.DefineColor()
 
 	method_struct.Method()
+
+	pointer.Pointer()
 
 	structs.Student()
 
