@@ -82,7 +82,8 @@ func main() {
 
 	method_struct.Method()
 
-	pointer.Pointer()
+	pointer.String()
+	pointer.Struct()
 
 	structs.Student()
 
