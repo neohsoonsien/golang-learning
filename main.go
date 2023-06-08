@@ -84,6 +84,7 @@ func main() {
 
 	pointer.String()
 	pointer.Struct()
+	pointer.Int()
 
 	structs.Student()
 
