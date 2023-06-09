@@ -21,6 +21,7 @@ import (
 	"golang-learning/pointer"
 	// "golang-learning/redis"
 	"golang-learning/slice"
+	"golang-learning/string"
 	"golang-learning/structs"
 	"golang-learning/unix_time"
 )
@@ -86,6 +87,7 @@ func main() {
 	pointer.Struct()
 	pointer.Int()
 
+	string.Prefix("This is a string", "This")
 	structs.Student()
 
 	fmt.Printf("Time now in miliseconds: %v, time now in nanosecond: %v.", unix_time.UnixMilli(), unix_time.UnixNano())
