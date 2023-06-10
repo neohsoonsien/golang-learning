@@ -14,7 +14,7 @@ import (
 	"golang-learning/flagging"
 	"golang-learning/ioutil"
 	"golang-learning/test"
-	// "golang-learning/mongodb"
+	"golang-learning/mongodb"
 	"golang-learning/outer"
 	"golang-learning/argument"
 	"golang-learning/logger"
@@ -74,6 +74,8 @@ func main() {
 	// mongodb.Match()
 
 	// mongodb.Sort()
+
+	mongodb.Aggregate2()
 
 	outer.Exit()
 
