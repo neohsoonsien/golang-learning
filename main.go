@@ -75,7 +75,7 @@ func main() {
 
 	// mongodb.Sort()
 
-	mongodb.FindOne_UpdateOne()
+	// mongodb.FindOne_UpdateOne()
 
 	outer.Exit()
 
@@ -93,4 +93,6 @@ func main() {
 	structs.Student()
 
 	fmt.Printf("Time now in miliseconds: %v, time now in nanosecond: %v.", unix_time.UnixMilli(), unix_time.UnixNano())
+
+	mongodb.Aggregate2()
 }

@@ -57,10 +57,14 @@ func Aggregate2() {
 	address := "0x0fc7343b1121381485f6283B234586B901a26451"
  	collection := client.Database("events").Collection("proxies")
 	matchAddress := bson.D{{"$match", bson.D{{"address", address}}}}
+	newProxyAddress := make(map[string]string)
+	newProxyAddress["0xA554690c3c7273Cd0F9c70Deb664109578AbaB02"] = "haha"
 	updateProxyAddress := bson.D{{
-		"$addFields", bson.D{{
-			"proxyaddress", bson.D{{
-				"$mergeObjects", [ "$proxyaddress", {"0xA554690c3c7273Cd0F9c70Deb664109578AbaB02": "0x0fc7343b1121381485f6283B234586B901a26451"} ] }} }} }}
+		"$replaceWith", bson.D{{
+			"$setField", bson.D{
+				{ "field", "proxyaddress"},
+				{ "input", "$$ROOT"},
+				{ "value", bson.D{{"$mergeObjects", bson.A{"$proxyaddress", newProxyAddress} }} } } }} }}
 
 	// to allow higher tolerance in memory usage
 	enableDiskUse := true
@@ -81,6 +85,7 @@ func Aggregate2() {
 
 	if proxies == nil {
 		logger.Infof("The contract could not be found in collection tracker")
+		return
 	}
 
 	// marshal indent to print out the nft
