@@ -2,7 +2,6 @@ package mongodb
 import (
 	"context"
 	"fmt"
-	"encoding/json"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -27,7 +26,7 @@ func Aggregate2() {
 	// ******************************************************* //
 	// Step 1: define the mongoURI connection string
 	// ******************************************************* //
-	mongoURI := ""
+	mongoURI := "mongodb://tracker:tracker!@localhost:28015/events?directConnection=true"
 
 	// initialize logger
 	logger := zap.NewExample().Sugar()
@@ -58,7 +57,7 @@ func Aggregate2() {
  	collection := client.Database("events").Collection("proxies")
 	matchAddress := bson.D{{"$match", bson.D{{"address", address}}}}
 	newProxyAddress := make(map[string]string)
-	newProxyAddress["0xA554690c3c7273Cd0F9c70Deb664109578AbaB02"] = "haha"
+	newProxyAddress["0xA554690c3c7273Cd0F9c70Deb664109578AbaB02"] = "0x0fc7343b1121381485f6283B234586B901a26451"
 	updateProxyAddress := bson.D{{
 		"$replaceWith", bson.D{{
 			"$setField", bson.D{
@@ -85,16 +84,45 @@ func Aggregate2() {
 
 	if proxies == nil {
 		logger.Infof("The contract could not be found in collection tracker")
+
+		newProxyAddress := make(map[string]string)
+		newProxyAddress["0xA554690c3c7273Cd0F9c70Deb664109578AbaB02"] = "0x0fc7343b1121381485f6283B234586B901a26451"
+		res, err := collection.InsertOne(
+			context.TODO(),
+			bson.D{{"_id", primitive.NewObjectID()},
+				{"blocknumber", uint64(234567)},
+				{"transactionhash", "0xc6547h5"},
+				{"time", uint64(17738743)},
+				{"address", address},
+				{"proxyaddress", newProxyAddress},
+				{"createdtime", uint64(1123454345)}})
+		if err != nil {
+			logger.Error(err)
+		}
+		logger.Infof("inserted document with ID %v\n", res.InsertedID)
 		return
 	}
 
 	// marshal indent to print out the nft
 	for _, proxy := range proxies {
-		output, err := json.MarshalIndent(proxy, "", "    ")
+		logger.Infof("The proxyaddress is %v", proxy.ProxyAddress)
+
+		updateOpts := options.Update().SetUpsert(true)
+		update := bson.D{{"$set", bson.D{{"proxyaddress", proxy.ProxyAddress}}}}
+		filter := bson.D{{"address", address}}
+		result, err := collection.UpdateOne(context.TODO(), filter, update, updateOpts)
 		if err != nil {
-			panic(err)
+			logger.Error(err)
 		}
-		fmt.Println(output)
-		fmt.Printf("%v\n", proxy.ProxyAddress)
+
+		if result.MatchedCount != 0 {
+			logger.Infof("updated an existing document")
+			return
+		}
+		if result.UpsertedCount != 0 {
+			logger.Infof("inserted a new document with ID %v\n", result.UpsertedID)
+		}
+
+		logger.Infof("found document %v", proxies)
 	}
 }
