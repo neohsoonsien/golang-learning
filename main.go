@@ -14,7 +14,7 @@ import (
 	"golang-learning/flagging"
 	"golang-learning/ioutil"
 	"golang-learning/test"
-	// "golang-learning/mongodb"
+	"golang-learning/mongodb"
 	"golang-learning/outer"
 	"golang-learning/argument"
 	"golang-learning/logger"
@@ -97,4 +97,6 @@ func main() {
 	fmt.Printf("Time now in miliseconds: %v, time now in nanosecond: %v.", unix_time.UnixMilli(), unix_time.UnixNano())
 
 	// mongodb.Aggregate2()
+
+	mongodb.BulkWrite()
 }
