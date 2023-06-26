@@ -14,7 +14,7 @@ import (
 	"golang-learning/flagging"
 	"golang-learning/ioutil"
 	"golang-learning/test"
-	"golang-learning/mongodb"
+	// "golang-learning/mongodb"
 	"golang-learning/outer"
 	"golang-learning/argument"
 	"golang-learning/logger"
@@ -23,6 +23,7 @@ import (
 	"golang-learning/slice"
 	"golang-learning/string"
 	"golang-learning/structs"
+	"golang-learning/switch_control"
 	"golang-learning/unix_time"
 )
 
@@ -94,9 +95,11 @@ func main() {
 	string.Prefix("This is a string", "This")
 	structs.Student()
 
-	fmt.Printf("Time now in miliseconds: %v, time now in nanosecond: %v.", unix_time.UnixMilli(), unix_time.UnixNano())
+	fmt.Printf("Time now in miliseconds: %v, time now in nanosecond: %v.\n", unix_time.UnixMilli(), unix_time.UnixNano())
 
 	// mongodb.Aggregate2()
 
-	mongodb.BulkWrite()
+	// mongodb.BulkWrite()
+
+	switch_control.Switch("C")
 }
