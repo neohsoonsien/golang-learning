@@ -32,9 +32,12 @@ func (s *server) Classroom(ctx context.Context, in *pb.ClassroomRequest) (*pb.Cl
 	// hard-code a classroom value
 	classroom := "1T10"
 	num := pb.StudentStatus_value["ACTIVE"]
-	value := pb.StudentStatus(num)
-	fmt.Printf("The key of the StudentStatus is %v \n", num)
-	fmt.Printf("The StudentStatus is %v \n", value)
+	valueNum := pb.StudentStatus(num)
+	valueString := pb.StudentStatus_ACTIVE.String()
+	log.Printf("The key of the StudentStatus is %v \n", num)
+	log.Printf("The StudentStatus is %v \n", valueNum)
+	log.Printf("The StudentStatus is %v \n", valueString)
+
 	return &pb.ClassroomResponse{Classroom: classroom}, nil
 }
 
@@ -69,10 +72,10 @@ func main() {
 	}
 
 	log.Printf("server listening at %v", listener.Addr())
-	
+
 	s := grpc.NewServer()
 	pb.RegisterGreeterServer(s, &server{})
-	
+
 	if err := s.Serve(listener); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
