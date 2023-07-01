@@ -17,6 +17,7 @@ const port = ":50051"
 
 // CurrencyService implements the pb CurrencyServiceServer interface
 type CurrencyService struct {
+	pb.UnimplementedCurrencyServiceServer
 	mtex sync.Mutex
 	data []*pb.Currency
 }
@@ -110,7 +111,7 @@ func (c *CurrencyService) FindCurrencyStream(
 func main() {
 
 	// load data into protobuf structures
-	data, err := util.LoadPbFromCsv("./curdata.csv")
+	data, err := util.LoadPbFromCsv("./../curdata.csv")
 	if err != nil {
 		log.Fatal(err) // dont start
 	}
