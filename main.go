@@ -6,6 +6,7 @@ import (
 	// "golang-learning/auth"
 	"golang-learning/array"
 	"golang-learning/boolean"
+	"golang-learning/bytes"
 	"golang-learning/math"
 	"golang-learning/marshal"
 	"golang-learning/mapping"
@@ -102,4 +103,7 @@ func main() {
 	// mongodb.BulkWrite()
 
 	switch_control.Switch("C")
+
+	bytes.StringToBytes()
+	bytes.BytesToString()
 }
