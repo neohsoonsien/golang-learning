@@ -1,5 +1,6 @@
 grpc*/*/*.pb.go
 grpc*/*/*/*.pb.go
+protobuf/*/*.pb.go
 */.env
 *.json
 *.csv
