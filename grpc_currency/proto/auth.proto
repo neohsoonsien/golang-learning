@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+option go_package = "."; // compile protobuff into this directory
+
+package grpc_currency;
+
+message AuthRequest{
+    string uname = 1;
+    string pwd = 2;
+}
+
+message AuthResponse {
+    string token = 1;
+}
+
+service Auth {
+    rpc Login(AuthRequest) returns (AuthResponse){}
+}
