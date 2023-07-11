@@ -35,6 +35,7 @@ type user struct {
 }
 
 type AuthService struct {
+	pb.UnimplementedAuthServer
 	*user
 }
 
