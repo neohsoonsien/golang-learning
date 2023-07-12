@@ -7,19 +7,22 @@ import (
 	"golang-learning/array"
 	"golang-learning/boolean"
 	"golang-learning/bytes"
-	"golang-learning/math"
-	"golang-learning/marshal"
-	"golang-learning/mapping"
-	"golang-learning/method_struct"
 	"golang-learning/csv"
+	"golang-learning/errors_handler"
 	"golang-learning/flagging"
 	"golang-learning/ioutil"
+	"golang-learning/mapping"
+	"golang-learning/marshal"
+	"golang-learning/math"
+	"golang-learning/method_struct"
 	"golang-learning/test"
+
 	// "golang-learning/mongodb"
-	"golang-learning/outer"
 	"golang-learning/argument"
 	"golang-learning/logger"
+	"golang-learning/outer"
 	"golang-learning/pointer"
+
 	// "golang-learning/redis"
 	"golang-learning/slice"
 	"golang-learning/string"
@@ -106,4 +109,6 @@ func main() {
 
 	bytes.StringToBytes()
 	bytes.BytesToString()
+
+	errors_handler.Handler()
 }
