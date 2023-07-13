@@ -72,8 +72,6 @@ func main() {
 
 	// auth.Auth()
 
-	// auth.GrpcAuth()
-
 	// asynchronous.Asynchronous()
 
 	// mongodb.Group()
