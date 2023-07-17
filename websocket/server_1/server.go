@@ -61,7 +61,7 @@ func setupRoutes() {
 }
 
 func main() {
-	fmt.Println("Hello World")
+	fmt.Println("Hello, this is a websocket server!")
 	setupRoutes()
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
