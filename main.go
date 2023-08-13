@@ -24,6 +24,7 @@ import (
 	"golang-learning/pointer"
 
 	// "golang-learning/redis"
+	"golang-learning/singleton"
 	"golang-learning/slice"
 	"golang-learning/string"
 	"golang-learning/structs"
@@ -109,4 +110,10 @@ func main() {
 	bytes.BytesToString()
 
 	errors_handler.Handler()
+
+	s1 := singleton.GetInstance("first")
+	s2 := singleton.GetInstance("second")
+	println("s1.GetName()", s1.GetName())
+	println("s2.GetName()", s2.GetName())
+	println("s1 == s2", s1 == s2)
 }
