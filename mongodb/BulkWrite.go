@@ -46,13 +46,13 @@ func BulkWrite() {
 
 	address := "0x0fc7343b1121381485f6283B234586B901a26451"
 	collection := client.Database("events").Collection("proxies")
-   	findOneOpts := options.FindOne().SetSort(bson.D{{"_id", -1}})
-   	var proxies Proxy
-   	err = collection.FindOne(
+	findOneOpts := options.FindOne().SetSort(bson.D{{"_id", -1}})
+	proxies := &Proxy{}
+	err = collection.FindOne(
 		context.TODO(),
-	   	bson.D{{"address", address}},
-	   	findOneOpts,
-   	).Decode(&proxies)
+		bson.D{{"address", address}},
+		findOneOpts,
+	).Decode(proxies)
 
 	fmt.Println(proxies)
 

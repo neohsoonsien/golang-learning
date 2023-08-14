@@ -1,4 +1,5 @@
 package mongodb
+
 import (
 	"context"
 	"fmt"
@@ -43,20 +44,18 @@ func FindOne_UpdateOne() {
 	}
 	fmt.Println("Successfully connected and pinged.")
 
-
 	// Find the document for which the _id field matches id.
 	// Specify the Sort option to sort the documents by age.
 	// The first document in the sorted order will be returned.
 	address := "0x0fc7343b1121381485f6283B234586B901a26451"
- 	collection := client.Database("events").Collection("proxies")
+	collection := client.Database("events").Collection("proxies")
 	findOneOpts := options.FindOne().SetSort(bson.D{{"_id", -1}})
-	var proxies Proxy
+	proxies := &Proxy{}
 	err = collection.FindOne(
 		context.TODO(),
 		bson.D{{"address", address}},
 		findOneOpts,
-	).Decode(&proxies)
-
+	).Decode(proxies)
 
 	if err != nil {
 		// ErrNoDocuments means that the filter did not match any documents in
@@ -67,12 +66,12 @@ func FindOne_UpdateOne() {
 			res, err := collection.InsertOne(
 				context.TODO(),
 				bson.D{{"_id", primitive.NewObjectID()},
-				{"blocknumber", uint64(234567)},
-				{"transactionhash", "0xc6547h5"},
-				{"time", uint64(17738743)},
-				{"address", address},
-				{"proxyaddress", newProxyAddress},
-				{"createdtime", uint64(1123454345)}})
+					{"blocknumber", uint64(234567)},
+					{"transactionhash", "0xc6547h5"},
+					{"time", uint64(17738743)},
+					{"address", address},
+					{"proxyaddress", newProxyAddress},
+					{"createdtime", uint64(1123454345)}})
 			if err != nil {
 				logger.Error(err)
 			}
