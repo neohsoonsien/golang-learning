@@ -8,6 +8,7 @@ import (
 	"golang-learning/boolean"
 	"golang-learning/bytes"
 	"golang-learning/csv"
+	"golang-learning/enumeration"
 	"golang-learning/errors_handler"
 	"golang-learning/flagging"
 	"golang-learning/ioutil"
@@ -116,4 +117,6 @@ func main() {
 	println("s1.GetName()", s1.GetName())
 	println("s2.GetName()", s2.GetName())
 	println("s1 == s2", s1 == s2)
+
+	enumeration.Enumeration()
 }
