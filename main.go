@@ -4,6 +4,7 @@ import (
 	"fmt"
 	// "golang-learning/asynchronous"
 	// "golang-learning/auth"
+	"golang-learning/apache_beam"
 	"golang-learning/array"
 	"golang-learning/boolean"
 	"golang-learning/bytes"
@@ -119,4 +120,6 @@ func main() {
 	println("s1 == s2", s1 == s2)
 
 	enumeration.Enumeration()
+
+	apache_beam.Hello()
 }
