@@ -12,6 +12,7 @@ import (
 	"golang-learning/enumeration"
 	"golang-learning/errors_handler"
 	"golang-learning/flagging"
+	"golang-learning/float"
 	"golang-learning/ioutil"
 	"golang-learning/mapping"
 	"golang-learning/marshal"
@@ -122,4 +123,6 @@ func main() {
 	enumeration.Enumeration()
 
 	apache_beam.Hello()
+
+	float.Float()
 }
