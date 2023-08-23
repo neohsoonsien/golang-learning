@@ -19,6 +19,7 @@ import (
 	"golang-learning/math"
 	"golang-learning/method_struct"
 	"golang-learning/test"
+	"golang-learning/timing"
 
 	// "golang-learning/mongodb"
 	"golang-learning/argument"
@@ -125,4 +126,6 @@ func main() {
 	apache_beam.Hello()
 
 	float.Float()
+
+	timing.Month()
 }
