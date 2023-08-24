@@ -13,5 +13,5 @@ func Month() {
 	log.Printf("Current month is %v", currentMonth)
 
 	log.Printf("UTC Unix time in second is %v", time.Unix(now.Unix(), 0))
-	log.Printf("Current month in UTC Unix time is %v", time.Unix(now.Unix(), 0).Month())
+	log.Printf("Current month-year in UTC Unix time is %v-%v", time.Unix(now.Unix(), 0).Month(), time.Unix(now.Unix(), 0).Year())
 }

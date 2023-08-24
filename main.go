@@ -128,4 +128,6 @@ func main() {
 	float.Float()
 
 	timing.Month()
+
+	fmt.Print(mapping.Map2D())
 }
