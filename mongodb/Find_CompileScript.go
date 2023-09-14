@@ -19,6 +19,7 @@ import (
 
 type Coindex1NftPrice struct {
 	Id      primitive.ObjectID `bson:"_id"`
+	Token   string             `bson:"token"`
 	TokenId string             `bson:"token_id"`
 	Address string             `bson:"address"`
 	Price   string             `bson:"tran_price"`
