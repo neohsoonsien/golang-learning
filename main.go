@@ -22,7 +22,7 @@ import (
 	"golang-learning/math"
 	"golang-learning/method_struct"
 
-	"golang-learning/mongodb"
+	// "golang-learning/mongodb"
 	"golang-learning/outer"
 	"golang-learning/pointer"
 
@@ -132,5 +132,7 @@ func main() {
 
 	fmt.Print(mapping.Map2D())
 
-	mongodb.FindOne()
+	// mongodb.FindOne()
+
+	fmt.Println(math.AddBigInt(math.BigInt("-200000000"), math.BigInt("1")))
 }
