@@ -93,3 +93,14 @@
             }
         ]
     ```
+
+# Test the Application from localhost
+1.  Launch the application with
+    ```bash
+        go run ./
+    ```
+2.  One can obtain the response from the application via
+    ```bash
+        curl localhost:8080/products
+    ```
+    If one runs the same command within the `redis` expiration time, the `_source` would be _"Redis Cache"_ instead of _"MongoDB database"_.
