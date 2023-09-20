@@ -11,7 +11,7 @@ func getFromCache(ctx context.Context) (bool, map[string]interface{}, error) {
 
 	redisClient := redis.NewClient(&redis.Options{
 		Addr:     "localhost:6379",
-		Password: "",
+		Password: "PASSWORD",
 		DB:       0,
 	})
 

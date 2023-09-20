@@ -8,8 +8,8 @@ import (
 )
 
 const (
-	MONGO_DB_USER = "mongo_db_admin"
-	MONGO_DB_PASS = "EXAMPLE_PASSWORD"
+	MONGO_DB_USER = "root"
+	MONGO_DB_PASS = "example"
 	MONGO_DB_NAME = "e-commerce"
 )
 

@@ -10,7 +10,7 @@ import (
 
 func getFromDb(ctx context.Context) (map[string]interface{}, error) {
 
-	client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb://"+MONGO_DB_USER+":"+MONGO_DB_PASS+"@localhost:27017"))
+	client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb://"+MONGO_DB_USER+":"+MONGO_DB_PASS+"@localhost:3001"))
 
 	if err != nil {
 		return nil, err
