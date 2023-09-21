@@ -33,6 +33,13 @@ services:
     networks:
       - mongodb_bridge
 
+  redis-insight:
+    image: redislabs/redisinsight
+    ports:
+      - 8001:8001
+    networks:
+      - mongodb_bridge
+
 networks:
   mongodb_bridge:
     driver: bridge

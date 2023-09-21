@@ -104,3 +104,15 @@
         curl localhost:8080/products
     ```
     If one runs the same command within the `redis` expiration time, the `_source` would be _"Redis Cache"_ instead of _"MongoDB database"_.
+
+# Browse the Redis Cache via Redis-Insight
+1.  One can lauch the _Redis-Insight_ application at
+    ```bash
+        localhost:8001
+    ```
+2.  One should provide the redis `host:port` and other connection details as
+    -   Host:     redis
+    -   Port:     6379
+    -   Name:     e-commerce
+    -   Password: PASSWORD
+    when prompted.
