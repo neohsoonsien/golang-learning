@@ -11,6 +11,7 @@ import (
 	"golang-learning/boolean"
 	"golang-learning/bytes"
 	"golang-learning/csv"
+	"golang-learning/decimal128"
 	"golang-learning/enumeration"
 	"golang-learning/errors_handler"
 	"golang-learning/flagging"
@@ -138,4 +139,12 @@ func main() {
 	fmt.Printf("Type: %T Value: %v\n", math.Float64("20"), math.Float64("20"))
 	fmt.Printf("big.Float Quotient is %v\n", math.FloatQuotient("2000", "9"))
 	fmt.Printf("big.Float Subtract is %v\n", math.FloatSubtract("2000", "10"))
+
+	value _ := decimal128.ConvertToDecimal128(120, 3040)
+	fmt.Printf("Type: %T Value: %v\n", value, value)
+
+	high, low := value.GetBytes()
+	fmt.Printf("High is %v, low is %v\n", high, low)
+
+	fmt.Printf("Value in string is %v\n", value.String())
 }
