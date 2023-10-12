@@ -140,11 +140,14 @@ func main() {
 	fmt.Printf("big.Float Quotient is %v\n", math.FloatQuotient("2000", "9"))
 	fmt.Printf("big.Float Subtract is %v\n", math.FloatSubtract("2000", "10"))
 
-	value _ := decimal128.ConvertToDecimal128(120, 3040)
+	value, _ := decimal128.ConvertToDecimal128(120, 3040)
 	fmt.Printf("Type: %T Value: %v\n", value, value)
 
 	high, low := value.GetBytes()
 	fmt.Printf("High is %v, low is %v\n", high, low)
 
 	fmt.Printf("Value in string is %v\n", value.String())
+
+	integerPart, decimalPart := math.SeparateIntegerDecimal("30.4567")
+	fmt.Printf("The integer part is %v, and the decimal part is %v\n", integerPart, decimalPart)
 }
