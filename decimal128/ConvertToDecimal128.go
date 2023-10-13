@@ -22,3 +22,7 @@ func ConvertToDecimal128(units int64, nanos int32) (primitive.Decimal128, error)
 	}
 	return primitive.ParseDecimal128(fmt.Sprintf("%d.%09d", units, nanos))
 }
+
+func ConvertDecimal128ToString(decimal primitive.Decimal128) string {
+	return decimal.String()
+}
