@@ -22,11 +22,13 @@ func FloatQuotient(x string, y string) *big.Float {
 	return big.NewFloat(0).Quo(BigFloat(x), BigFloat(y))
 }
 
-func SeparateIntegerDecimal(x string) (*big.Float, *big.Float) {
+func SeparateIntegerDecimal(x string) (int64, int32) {
 	integer64, _ := BigFloat(x).Int64()
 	integerPart := big.NewFloat(float64(integer64))
 	decimalPart := big.NewFloat(0).Sub(BigFloat(x), integerPart)
-	return integerPart, decimalPart
+	decimalPart = big.NewFloat(0).Mul(decimalPart, big.NewFloat(float64(1000000000)))
+	decimal64, _ := decimalPart.Int64()
+	return integer64, int32(decimal64)
 }
 
 func FloatSubtract(x string, y string) *big.Float {

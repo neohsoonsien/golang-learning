@@ -2,6 +2,9 @@ package decimal128
 
 import (
 	"fmt"
+	"math/big"
+	"strconv"
+	"strings"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
@@ -21,6 +24,33 @@ func ConvertToDecimal128(units int64, nanos int32) (primitive.Decimal128, error)
 		return primitive.ParseDecimal128(fmt.Sprintf("-0.%09d", -nanos))
 	}
 	return primitive.ParseDecimal128(fmt.Sprintf("%d.%09d", units, nanos))
+}
+
+func ConvertBigIntToDecimal128(bigInt *big.Int) (primitive.Decimal128, error) {
+	decimal, err := ConvertToDecimal128(bigInt.Int64(), int32(0))
+	if err != nil {
+		return ConvertToDecimal128(int64(0), int32(0)) // return 0 to DB if encounter error
+	}
+	return decimal, nil
+}
+
+func ConvertDecimal128ToBig(decimal primitive.Decimal128) (*big.Float, *big.Int, error) {
+	str := decimal.String()
+	bigStr := strings.Split(str, ".")
+
+	bigFloat, _, _ := big.NewFloat(0).Parse(str, 10)
+	bigInt, _ := big.NewInt(0).SetString(bigStr[0], 10)
+
+	return bigFloat, bigInt, nil
+}
+
+func ConvertStringToDecimal128(str string) (primitive.Decimal128, error) {
+	value, _ := strconv.ParseInt(str, 10, 64)
+	decimal, err := ConvertToDecimal128(value, int32(0))
+	if err != nil {
+		return ConvertToDecimal128(int64(0), int32(0)) // return 0 to DB if encounter error
+	}
+	return decimal, nil
 }
 
 func ConvertDecimal128ToString(decimal primitive.Decimal128) string {
