@@ -147,10 +147,19 @@ func main() {
 	decimal, _ := decimal128.ConvertBigIntToDecimal128(math.BigInt("200000000"))
 	fmt.Printf("Value in decimal128, Type: %T Value: %v\n", decimal, decimal)
 
+	value, _ = decimal128.ConvertStringToDecimal128("-0.89")
+	fmt.Printf("Value in decimal128, Type: %T Value: %v\n", value, value)
+
 	value, _ = decimal128.ConvertToDecimal128(0, 340000000)
 	bigFloat, bigInt, _ := decimal128.ConvertDecimal128ToBig(value)
 	fmt.Printf("Value in *big.Float, Type: %T Value: %v\n", bigFloat, bigFloat)
 	fmt.Printf("Value in *big.Int, Type: %T Value: %v\n", bigInt, bigInt)
+
+	value, _ = decimal128.ConvertToDecimal128(int64(0), int32(0))
+	bigInt, exp, _ := decimal128.ConvertDecimal128ToBigInt(value)
+	fmt.Printf("Value in decimal128, Type: %T Value: %v\n", value, value)
+	fmt.Printf("Value in *big.Int, Type: %T Value: %v\n", bigInt, bigInt)
+	fmt.Printf("Value in *int, Type: %T Value: %v\n", exp, exp)
 
 	high, low := value.GetBytes()
 	fmt.Printf("High is %v, low is %v\n", high, low)

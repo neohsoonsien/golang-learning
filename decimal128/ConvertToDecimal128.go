@@ -2,6 +2,7 @@ package decimal128
 
 import (
 	"fmt"
+	"math"
 	"math/big"
 	"strconv"
 	"strings"
@@ -35,20 +36,39 @@ func ConvertBigIntToDecimal128(bigInt *big.Int) (primitive.Decimal128, error) {
 }
 
 func ConvertDecimal128ToBig(decimal primitive.Decimal128) (*big.Float, *big.Int, error) {
-	str := decimal.String()
-	bigStr := strings.Split(str, ".")
+	// convert decimal128 to bigInt and its exponential
+	bigInt, exp, _ := decimal.BigInt()
 
-	bigFloat, _, _ := big.NewFloat(0).Parse(str, 10)
-	bigInt, _ := big.NewInt(0).SetString(bigStr[0], 10)
+	// convert to *big.Float, and multiply with the exponential
+	bigFloat := big.NewFloat(float64(bigInt.Int64()))
+	expFloat64 := math.Pow10(exp)
+	bigFloat = big.NewFloat(0).Mul(bigFloat, big.NewFloat(float64(expFloat64)))
 
+	// truncate the *big.Float to *big.Int
+	integer64, _ := bigFloat.Int64()
+	bigInt = big.NewInt(integer64)
+
+	// first response is *big.Float, second response is *big.Int
 	return bigFloat, bigInt, nil
 }
 
 func ConvertStringToDecimal128(str string) (primitive.Decimal128, error) {
-	value, _ := strconv.ParseInt(str, 10, 64)
-	decimal, err := ConvertToDecimal128(value, int32(0))
-	if err != nil {
-		return ConvertToDecimal128(int64(0), int32(0)) // return 0 to DB if encounter error
+	var decimal primitive.Decimal128
+	var err error
+	if !strings.Contains(str, ".") {
+		value, _ := strconv.ParseInt(str, 10, 64)
+		decimal, err = ConvertToDecimal128(value, int32(0))
+		if err != nil {
+			return ConvertToDecimal128(int64(0), int32(0)) // return 0 to DB if encounter error
+		}
+	} else {
+		value, _ := strconv.ParseFloat(str, 64)
+		integerPart := int64(value)
+		decimalPart := value - float64(integerPart)
+		decimal, err = ConvertToDecimal128(integerPart, int32(decimalPart*float64(1000000000)))
+		if err != nil {
+			return ConvertToDecimal128(int64(0), int32(0)) // return 0 to DB if encounter error
+		}
 	}
 	return decimal, nil
 }
