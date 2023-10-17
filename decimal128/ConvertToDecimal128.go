@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/shopspring/decimal"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -52,6 +53,47 @@ func ConvertDecimal128ToBig(decimal primitive.Decimal128) (*big.Float, *big.Int,
 	return bigFloat, bigInt, nil
 }
 
+func ConvertDecimalToDecimal128(x decimal.Decimal) (primitive.Decimal128, error) {
+	fmt.Printf("*big.Int is %v", x.BigInt())
+	fmt.Printf("exp is %v", x.Exponent())
+
+	// these are the fields for decimal
+	bigInt := x.BigInt()
+	exponent := int64(x.Exponent())
+
+	// these are the fields for Decimal128
+	integerPart := bigInt.Int64()
+	decimalPart := int32(0)
+
+	multiplier := big.NewInt(10)
+	i := int64(1)
+	for i < IntAbs(exponent) {
+		multiplier = multiplier.Mul(multiplier, big.NewInt(10))
+		i += 1
+	}
+
+	unsignedBigInt := big.NewInt(0).Abs(bigInt)
+	if exponent > 0 {
+		bigInt = bigInt.Mul(bigInt, multiplier)
+	} else if exponent < 0 {
+		if unsignedBigInt.Cmp(multiplier) == 1 {
+			modulus, remainder := bigInt.DivMod(unsignedBigInt, multiplier, big.NewInt(1))
+			integerPart = big.NewInt(0).Mul(modulus, big.NewInt(int64(bigInt.Sign()))).Int64()
+			trailingZeros := big.NewInt(10)
+			i := int64(1)
+			for i < int64(9)+exponent {
+				trailingZeros = trailingZeros.Mul(trailingZeros, big.NewInt(10))
+				i += 1
+			}
+			decimalPart = int32(big.NewInt(0).Mul(remainder, trailingZeros).Int64())
+		}
+	}
+
+	decimal128, _ := ConvertToDecimal128(integerPart, decimalPart)
+
+	return decimal128, nil
+}
+
 func ConvertStringToDecimal128(str string) (primitive.Decimal128, error) {
 	var decimal primitive.Decimal128
 	var err error
@@ -75,4 +117,11 @@ func ConvertStringToDecimal128(str string) (primitive.Decimal128, error) {
 
 func ConvertDecimal128ToString(decimal primitive.Decimal128) string {
 	return decimal.String()
+}
+
+func IntAbs(x int64) int64 {
+	if x < 0 {
+		return -x
+	}
+	return x
 }
