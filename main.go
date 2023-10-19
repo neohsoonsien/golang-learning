@@ -11,7 +11,6 @@ import (
 	"golang-learning/boolean"
 	"golang-learning/bytes"
 	"golang-learning/csv"
-	"golang-learning/decimal128"
 	"golang-learning/enumeration"
 	"golang-learning/errors_handler"
 	"golang-learning/flagging"
@@ -139,31 +138,4 @@ func main() {
 	fmt.Printf("Type: %T Value: %v\n", math.Float64("20"), math.Float64("20"))
 	fmt.Printf("big.Float Quotient is %v\n", math.FloatQuotient("2000", "9"))
 	fmt.Printf("big.Float Subtract is %v\n", math.FloatSubtract("2000", "10"))
-
-	value, _ := decimal128.ConvertToDecimal128(120, 3040)
-	fmt.Printf("Value in decimal128, Type: %T Value: %v\n", value, value)
-	valueStr := decimal128.ConvertDecimal128ToString(value)
-	fmt.Printf("Value in string Type: %T Value: %v\n", valueStr, valueStr)
-	decimal, _ := decimal128.ConvertBigIntToDecimal128(math.BigInt("200000000"))
-	fmt.Printf("Value in decimal128, Type: %T Value: %v\n", decimal, decimal)
-
-	value, _ = decimal128.ConvertStringToDecimal128("-0.89")
-	fmt.Printf("Value in decimal128, Type: %T Value: %v\n", value, value)
-
-	value, _ = decimal128.ConvertToDecimal128(0, 340000000)
-	bigFloat, bigInt, _ := decimal128.ConvertDecimal128ToBig(value)
-	fmt.Printf("Value in *big.Float, Type: %T Value: %v\n", bigFloat, bigFloat)
-	fmt.Printf("Value in *big.Int, Type: %T Value: %v\n", bigInt, bigInt)
-
-	value, _ = decimal128.ConvertToDecimal128(int64(0), int32(0))
-	bigInt, exp, _ := decimal128.ConvertDecimal128ToBigInt(value)
-	fmt.Printf("Value in decimal128, Type: %T Value: %v\n", value, value)
-	fmt.Printf("Value in *big.Int, Type: %T Value: %v\n", bigInt, bigInt)
-	fmt.Printf("Value in *int, Type: %T Value: %v\n", exp, exp)
-
-	high, low := value.GetBytes()
-	fmt.Printf("High is %v, low is %v\n", high, low)
-
-	integerPart, decimalPart := math.SeparateIntegerDecimal(valueStr)
-	fmt.Printf("The integer part is %v, and the decimal part is %v\n", integerPart, decimalPart)
 }
