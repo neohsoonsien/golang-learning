@@ -2,6 +2,7 @@ package decimal128
 
 import (
 	"fmt"
+	"math"
 	"math/big"
 	"strconv"
 	"strings"
@@ -79,6 +80,58 @@ func ConvertStringToDecimal128(str string) (primitive.Decimal128, error) {
 		}
 	}
 	return x, nil
+}
+
+func CompareDecimal128(d1, d2 primitive.Decimal128) (int, error) {
+	b1, exp1, err := d1.BigInt()
+	if err != nil {
+		return int(math.NaN()), err
+	}
+	b2, exp2, err := d2.BigInt()
+	if err != nil {
+		return int(math.NaN()), err
+	}
+
+	// compare sign
+	sign := b1.Sign()
+	if sign != b2.Sign() {
+		if b1.Sign() > 0 {
+			return 1, nil
+		} else {
+			return -1, nil
+		}
+	}
+
+	// adjust for both side to match same digits length
+	len1, len2 := len(b1.String()), len(b2.String())
+	if len1 < len2 {
+		exp1 -= len2 - len1
+		expDiff := big.NewInt(0).Exp(big.NewInt(10), big.NewInt(int64(len2-len1)), nil)
+		b1 = big.NewInt(0).Mul(b1, expDiff)
+	} else if len1 > len2 {
+		exp2 -= len1 - len2
+		expDiff := big.NewInt(0).Exp(big.NewInt(10), big.NewInt(int64(len1-len2)), nil)
+		b2 = big.NewInt(0).Mul(b2, expDiff)
+	}
+
+	// compare digits if same exp
+	if exp1 == exp2 {
+		return b1.Cmp(b2), nil
+	}
+
+	// compare exp
+	if sign < 0 {
+		if exp1 < exp2 {
+			return 1, nil
+		}
+		return -1, nil
+	} else {
+		if exp1 < exp2 {
+			return -1, nil
+		}
+
+		return 1, nil
+	}
 }
 
 func IntAbs(x int64) int64 {

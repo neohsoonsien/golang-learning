@@ -250,54 +250,69 @@ func TestConvertStringToDecimal128(t *testing.T) {
 	}
 }
 
-func CompareDecimal128(d1, d2 primitive.Decimal128) (int, error) {
-	b1, exp1, err := d1.BigInt()
-	if err != nil {
-		return 0, err
-	}
-	b2, exp2, err := d2.BigInt()
-	if err != nil {
-		return 0, err
-	}
+func TestCompareDecimal128(t *testing.T) {
+	t.Log("TestCompareDecimal128")
 
-	// compare sign
-	sign := b1.Sign()
-	if sign != b2.Sign() {
-		if b1.Sign() > 0 {
-			return 1, nil
-		} else {
-			return -1, nil
-		}
+	// compare d1 = d2
+	expected := primitive.Decimal128{}
+	actual := primitive.Decimal128{}
+	if equality, err := CompareDecimal128(expected, actual); err != nil || equality != 0 {
+		t.Errorf("Expected value: %v, Actual: %v, Error: Decimal128 values do not match", expected, actual)
 	}
 
-	// adjust for both side to match same digits length
-	len1, len2 := len(b1.String()), len(b2.String())
-	if len1 < len2 {
-		exp1 -= len2 - len1
-		expDiff := big.NewInt(0).Exp(big.NewInt(10), big.NewInt(int64(len2-len1)), nil)
-		b1 = big.NewInt(0).Mul(b1, expDiff)
-	} else if len1 > len2 {
-		exp2 -= len1 - len2
-		expDiff := big.NewInt(0).Exp(big.NewInt(10), big.NewInt(int64(len1-len2)), nil)
-		b2 = big.NewInt(0).Mul(b2, expDiff)
+	expected, _ = primitive.ParseDecimal128("33")
+	actual, _ = primitive.ParseDecimal128("33")
+	if equality, err := CompareDecimal128(expected, actual); err != nil || equality != 0 {
+		t.Errorf("Expected value: %v, Actual: %v, Error: Expect d1 = d2", expected, actual)
 	}
 
-	// compare digits if same exp
-	if exp1 == exp2 {
-		return b1.Cmp(b2), nil
+	// compare d1 > d2
+	expected, _ = primitive.ParseDecimal128("20")
+	actual, _ = primitive.ParseDecimal128("-20")
+	if equality, err := CompareDecimal128(expected, actual); err != nil || equality != 1 {
+		t.Errorf("Expected value: %v, Actual: %v, Error: Expect d1 > d2", expected, actual)
 	}
 
-	// compare exp
-	if sign < 0 {
-		if exp1 < exp2 {
-			return 1, nil
-		}
-		return -1, nil
-	} else {
-		if exp1 < exp2 {
-			return -1, nil
-		}
+	expected, _ = primitive.ParseDecimal128("9")
+	actual, _ = primitive.ParseDecimal128("8")
+	if equality, err := CompareDecimal128(expected, actual); err != nil || equality != 1 {
+		t.Errorf("Expected value: %v, Actual: %v, Error: Expect d1 > d2", expected, actual)
+	}
 
-		return 1, nil
+	expected, _ = primitive.ParseDecimal128("5")
+	actual, _ = primitive.ParseDecimal128("-1")
+	if equality, err := CompareDecimal128(expected, actual); err != nil || equality != 1 {
+		t.Errorf("Expected value: %v, Actual: %v, Error: Expect d1 > d2", expected, actual)
+	}
+
+	expected, _ = primitive.ParseDecimal128("5")
+	actual = primitive.Decimal128{}
+	if equality, err := CompareDecimal128(expected, actual); err != nil || equality != 1 {
+		t.Errorf("Expected value: %v, Actual: %v, Error: Expect d1 > d2", expected, actual)
+	}
+
+	// compare d1 < d2
+	expected, _ = primitive.ParseDecimal128("-20")
+	actual, _ = primitive.ParseDecimal128("20")
+	if equality, err := CompareDecimal128(expected, actual); err != nil || equality != -1 {
+		t.Errorf("Expected value: %v, Actual: %v, Error: Expect d1 < d2", expected, actual)
+	}
+
+	expected, _ = primitive.ParseDecimal128("-3")
+	actual, _ = primitive.ParseDecimal128("4")
+	if equality, err := CompareDecimal128(expected, actual); err != nil || equality != -1 {
+		t.Errorf("Expected value: %v, Actual: %v, Error: Expect d1 < d2", expected, actual)
+	}
+
+	expected, _ = primitive.ParseDecimal128("8")
+	actual, _ = primitive.ParseDecimal128("9")
+	if equality, err := CompareDecimal128(expected, actual); err != nil || equality != -1 {
+		t.Errorf("Expected value: %v, Actual: %v, Error: Expect d1 < d2", expected, actual)
+	}
+
+	expected = primitive.Decimal128{}
+	actual, _ = primitive.ParseDecimal128("5")
+	if equality, err := CompareDecimal128(expected, actual); err != nil || equality != -1 {
+		t.Errorf("Expected value: %v, Actual: %v, Error: Expect d1 < d2", expected, actual)
 	}
 }
