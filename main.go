@@ -34,6 +34,7 @@ import (
 	"golang-learning/switch_control"
 	"golang-learning/test"
 	"golang-learning/timing"
+	"golang-learning/type_assertion"
 	"golang-learning/unix_time"
 )
 
@@ -138,4 +139,6 @@ func main() {
 	fmt.Printf("Type: %T Value: %v\n", math.Float64("20"), math.Float64("20"))
 	fmt.Printf("big.Float Quotient is %v\n", math.FloatQuotient("2000", "9"))
 	fmt.Printf("big.Float Subtract is %v\n", math.FloatSubtract("2000", "10"))
+
+	type_assertion.TypeCheck("This is a string")
 }
