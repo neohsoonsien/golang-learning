@@ -15,6 +15,7 @@ import (
 	"golang-learning/errors_handler"
 	"golang-learning/flagging"
 	"golang-learning/float"
+	"golang-learning/generic"
 	"golang-learning/ioutil"
 	"golang-learning/logger"
 	"golang-learning/mapping"
@@ -34,7 +35,8 @@ import (
 	"golang-learning/switch_control"
 	"golang-learning/test"
 	"golang-learning/timing"
-	"golang-learning/type_assertion"
+
+	// "golang-learning/type_assertion"
 	"golang-learning/unix_time"
 )
 
@@ -140,5 +142,8 @@ func main() {
 	fmt.Printf("big.Float Quotient is %v\n", math.FloatQuotient("2000", "9"))
 	fmt.Printf("big.Float Subtract is %v\n", math.FloatSubtract("2000", "10"))
 
-	type_assertion.TypeCheck("This is a string")
+	// type_assertion.TypeCheck("This is a string")
+
+	generic.NonGenericInterface()
+	generic.GenericAny()
 }
