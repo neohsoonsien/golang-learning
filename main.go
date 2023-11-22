@@ -146,4 +146,5 @@ func main() {
 
 	generic.NonGenericInterface()
 	generic.GenericAny()
+	generic.TypeParameter()
 }
