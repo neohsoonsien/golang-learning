@@ -23,11 +23,11 @@ func TypeParameter() {
 		SumInts(ints),
 		SumFloats(floats))
 
-	log.Printf("Generic Sums: %v and %v\n",
+	log.Printf("Generic Sums, with type arguments: %v and %v\n",
 		SumIntsOrFloats[string, int64](ints),
 		SumIntsOrFloats[string, float64](floats))
 
-	log.Printf("Generic Sums, type parameters inferred: %v and %v\n",
+	log.Printf("Generic Sums, without type arguments: %v and %v\n",
 		SumIntsOrFloats(ints),
 		SumIntsOrFloats(floats))
 
