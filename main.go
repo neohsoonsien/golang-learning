@@ -10,6 +10,7 @@ import (
 	"golang-learning/array"
 	"golang-learning/boolean"
 	"golang-learning/bytes"
+	"golang-learning/channel"
 	"golang-learning/csv"
 	"golang-learning/enumeration"
 	"golang-learning/errors_handler"
@@ -146,4 +147,6 @@ func main() {
 
 	generic.NonGenericInterface()
 	generic.GenericAny()
+
+	channel.MainChannel("First test of the channel")
 }

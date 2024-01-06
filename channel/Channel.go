@@ -1,13 +1,19 @@
 package channel
 
-func ChannelOne() string {
-	messages := make(chan string)
+import "log"
 
-	ChannelTwo(messages)
+func subChannelOne(channel chan string) {
 
-	return <-messages
+	log.Printf("The message is %v", <-channel)
+	close(channel)
 }
 
-func ChannelTwo(msg chan string) {
-	msg <- "message from ChannelTwo"
+func MainChannel(message string) {
+	log.Print("Start of the main channel")
+	channel := make(chan string)
+	subChannelOne(channel)
+
+	log.Print("Send the message to the channel")
+	channel <- message
+	log.Print("End of the main channel")
 }
