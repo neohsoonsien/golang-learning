@@ -6,9 +6,10 @@ import (
 	"log"
 	"time"
 
+	pb "golang-learning/grpc/proto"
+
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
-	pb "golang-learning/grpc/proto"
 )
 
 const (
@@ -17,7 +18,6 @@ const (
 
 var (
 	addr = flag.String("addr", "localhost:50051", "the address to connect to")
-	name = flag.String("name", defaultName, "Name to greet")
 )
 
 func main() {
@@ -35,7 +35,8 @@ func main() {
 	defer cancel()
 
 	// test SayHello function
-	sayHello, err := c.SayHello(ctx, &pb.HelloRequest{Name: *name})
+	name := &pb.Name{FirstName: "John", LastName: "Wick"}
+	sayHello, err := c.SayHello(ctx, &pb.HelloRequest{Name: name})
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}

@@ -7,8 +7,9 @@ import (
 	"log"
 	"net"
 
-	"google.golang.org/grpc"
 	pb "golang-learning/grpc/proto"
+
+	"google.golang.org/grpc"
 )
 
 var (
@@ -23,7 +24,7 @@ type server struct {
 // SayHello implements helloworld.GreeterServer
 func (s *server) SayHello(ctx context.Context, in *pb.HelloRequest) (*pb.HelloResponse, error) {
 	log.Printf("Received: %v", in.GetName())
-	return &pb.HelloResponse{Message: "Hello " + in.GetName()}, nil
+	return &pb.HelloResponse{Message: "Hello, " + in.GetName().FirstName + in.GetName().LastName}, nil
 }
 
 // Classroom function
@@ -51,7 +52,7 @@ func (s *server) Greet(ctx context.Context, req *pb.GreetRequest) (*pb.GreetResp
 
 	switch req.CountryCode {
 	case "us":
-		greeting = "hello " + req.Username
+		greeting = "Hello " + req.Username
 	case "mx":
 		greeting = "Hola " + req.Username
 	default:
