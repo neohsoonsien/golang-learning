@@ -10,7 +10,6 @@ import (
 	"golang-learning/array"
 	"golang-learning/boolean"
 	"golang-learning/bytes"
-	"golang-learning/channel"
 	"golang-learning/csv"
 	"golang-learning/enumeration"
 	"golang-learning/errors_handler"
@@ -47,6 +46,7 @@ func main() {
 	fmt.Println(math.Sum(10))
 
 	marshal.Marshal()
+	marshal.Unmarshal()
 	fmt.Println(mapping.MapStruct())
 	fmt.Println(mapping.MapStudent("Lily", "C5678")["Lily"])
 	fmt.Println(mapping.MapList())
@@ -148,5 +148,5 @@ func main() {
 	generic.NonGenericInterface()
 	generic.GenericAny()
 
-	channel.MainChannel("First test of the channel")
+	// channel.MainChannel("First test of the channel")
 }
