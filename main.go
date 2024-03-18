@@ -16,12 +16,12 @@ import (
 	"golang-learning/flagging"
 	"golang-learning/float"
 	"golang-learning/generic"
-	"golang-learning/ioutil"
 	"golang-learning/logger"
 	"golang-learning/mapping"
 	"golang-learning/marshal"
 	"golang-learning/math"
 	"golang-learning/method_struct"
+	"golang-learning/readfile"
 
 	// "golang-learning/mongodb"
 	"golang-learning/outer"
@@ -56,7 +56,8 @@ func main() {
 
 	csv.Write()
 
-	ioutil.Directory()
+	readfile.ReadFile()
+	readfile.ReadDirectory()
 
 	fmt.Println(test.Greet("James"))
 
