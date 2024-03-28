@@ -4,5 +4,4 @@ protobuf/*/*.pb.go
 */.env
 *.json
 *.csv
-*.js
 .env
