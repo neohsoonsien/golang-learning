@@ -17,3 +17,7 @@ func TestMain(m *testing.M) {
 func TestMainChannel(t *testing.T) {
 	MainChannel()
 }
+
+func TestBuffer(t *testing.T) {
+	Buffer()
+}
