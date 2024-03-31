@@ -21,3 +21,7 @@ func TestMainChannel(t *testing.T) {
 func TestBuffer(t *testing.T) {
 	Buffer()
 }
+
+func TestSynchronization(t *testing.T) {
+	Synchronization()
+}
