@@ -52,11 +52,14 @@ func main() {
 	// test Greeting function
 	getGreeting("Jack", "us", c)
 	getGreeting("Jose", "mx", c)
+
+	// test Theater function
+	getTheater("Golden Screen Cinema", c)
 }
 
 func getGreeting(name string, countryCode string, c pb.GreeterClient) {
 
-	log.Println("creating greeting")
+	log.Println("Creating greeting")
 
 	res, err := c.Greet(context.Background(), &pb.GreetRequest{
 		CountryCode: countryCode,
@@ -69,4 +72,20 @@ func getGreeting(name string, countryCode string, c pb.GreeterClient) {
 	}
 
 	log.Println(res.Result)
+}
+
+func getTheater(name string, c pb.GreeterClient) {
+
+	log.Println("Getting Theater")
+
+	res, err := c.Theater(context.Background(), &pb.TheaterRequest{
+		Name: name,
+	})
+
+	if err != nil {
+		log.Println("error: ", err)
+		panic(err)
+	}
+
+	log.Printf("The Theater response is %v", res)
 }

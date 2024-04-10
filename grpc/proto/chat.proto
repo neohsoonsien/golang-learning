@@ -13,6 +13,8 @@ service Greeter {
 
   // unary
   rpc Greet(GreetRequest) returns (GreetResponse) {}
+
+  rpc Theater(TheaterRequest) returns (TheaterResponse) {}
 }
 
 message Name {
@@ -55,4 +57,17 @@ message GreetRequest {
 
 message GreetResponse {
   string result = 1;
+}
+
+message TheaterRequest {
+  string name = 1;
+}
+
+message TheaterResponse {
+  string name = 1;
+
+  oneof available_seat {
+    int32 count = 2;
+    string error_log = 3;
+  }
 }
