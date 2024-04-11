@@ -64,6 +64,29 @@ func (s *server) Greet(ctx context.Context, req *pb.GreetRequest) (*pb.GreetResp
 	}, nil
 }
 
+func (s *server) Theater(ctx context.Context, req *pb.TheaterRequest) (*pb.TheaterResponse, error) {
+
+	log.Println("Theater name is: ", req.Name)
+
+	theater := &pb.TheaterResponse{
+		Name:          req.Name,
+		AvailableSeat: &pb.TheaterResponse_Count{Count: int32(10)},
+	}
+
+	// ... snip ...
+	// Use a type switch to determine which oneof was set.
+	switch response := theater.AvailableSeat.(type) {
+	case *pb.TheaterResponse_Count: // Count is int32 type
+	case *pb.TheaterResponse_ErrorLog: // ErrorLog is string type
+		log.Printf("The response is %v", response)
+	case nil:
+	default:
+		log.Printf("TheaterResponse has unexpected type %T", response)
+	}
+
+	return theater, nil
+}
+
 func main() {
 	flag.Parse()
 
