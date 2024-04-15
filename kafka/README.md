@@ -8,6 +8,7 @@
 ## Kafka Setup
 1.  The _Kafka broker_ can be started locally with
     ```bash
+        cd kafka
         docker-compose up -d
     ```
 2.  All the settings for the Kafka bootstrap server can be configured inside the file `getting-started.properties`.
@@ -16,10 +17,23 @@
 1.  Events in Kafka are organized and durably stored in named topics.
 2.  A new topic, _purchases_ can be created using the `kafka-topics` command from the local running Kafka broker:
     ```bash
+        cd kafka
         docker compose exec broker \
             kafka-topics --create \
                 --topic purchases \
                 --bootstrap-server localhost:9092 \
                 --replication-factor 1 \
                 --partitions 1
+    ```
+
+## Build Producer and Produce Events
+1.  One can simply run the producer, and passing in the configuration file with
+    ```bash
+        cd kafka
+        go run producer/producer.go bootstrap-servers.properties
+    ```
+    ***Note: we don't compile the producer into binary as it requires the relative go file to be located in the same path, i.e the following command will fail to build
+    ```bash
+        cd kafka
+        go build -o out/producer utils/reader.go producer/producer.go
     ```
