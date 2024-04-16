@@ -37,3 +37,10 @@
         cd kafka
         go build -o out/producer utils/reader.go producer/producer.go
     ```
+
+## Build Consumer and Consume Events
+1.  One can execute the following command to run the consumer application to read the events from the `purchases` topic and print the _events_ to the terminal.
+    ```bash
+        cd kafka
+        go run consumer/consumer.go bootstrap-servers.properties
+    ```
