@@ -1,10 +1,13 @@
 package test
 
 import (
+	"flag"
 	"log"
 	"os"
 	"testing"
 )
+
+var short = flag.Bool("short", false, "short")
 
 func TestMain(m *testing.M) {
 	log.Print("BEFORE the tests!")
@@ -25,4 +28,10 @@ func TestA(t *testing.T) {
 
 func TestB(t *testing.T) {
 	t.Log("TestB running")
+}
+
+func TestShort(t *testing.T) {
+	if !*short {
+		t.Fail()
+	}
 }
