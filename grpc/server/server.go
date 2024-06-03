@@ -87,6 +87,26 @@ func (s *server) Theater(ctx context.Context, req *pb.TheaterRequest) (*pb.Theat
 	return theater, nil
 }
 
+func (s *server) Book(ctx context.Context, req *pb.BookRequest) (*pb.BookResponse, error) {
+
+	log.Println("Book title is: ", req.Title)
+
+	book := &pb.BookDetail{
+		Title:          req.Title,
+		Author: "J.K. Rowling",
+		Year: "2007",
+		Price: 59.90,
+	}
+
+	return &pb.BookResponse{
+		Response: &pb.BookResponse_BookDetail{
+			BookDetail: book,
+		},
+	}, nil
+}
+
+
+
 func main() {
 	flag.Parse()
 

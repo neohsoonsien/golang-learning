@@ -55,6 +55,9 @@ func main() {
 
 	// test Theater function
 	getTheater("Golden Screen Cinema", c)
+
+	// test Book function
+	getBook("Harry Potter", c)
 }
 
 func getGreeting(name string, countryCode string, c pb.GreeterClient) {
@@ -80,6 +83,22 @@ func getTheater(name string, c pb.GreeterClient) {
 
 	res, err := c.Theater(context.Background(), &pb.TheaterRequest{
 		Name: name,
+	})
+
+	if err != nil {
+		log.Println("error: ", err)
+		panic(err)
+	}
+
+	log.Printf("The Theater response is %v", res)
+}
+
+func getBook(name string, c pb.GreeterClient) {
+
+	log.Println("Getting Book")
+
+	res, err := c.Book(context.Background(), &pb.BookRequest{
+		Title: name,
 	})
 
 	if err != nil {

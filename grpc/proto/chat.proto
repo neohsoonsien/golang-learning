@@ -15,6 +15,8 @@ service Greeter {
   rpc Greet(GreetRequest) returns (GreetResponse) {}
 
   rpc Theater(TheaterRequest) returns (TheaterResponse) {}
+
+  rpc Book(BookRequest) returns (BookResponse) {}
 }
 
 message Name {
@@ -69,5 +71,23 @@ message TheaterResponse {
   oneof available_seat {
     int32 count = 2;
     string error_log = 3;
+  }
+}
+
+message BookRequest {
+  string title = 1;
+}
+
+message BookDetail {
+  string title = 1;
+  string author = 2;
+  string year = 3;
+  float price = 4;
+}
+
+message BookResponse {
+  oneof response {
+    BookDetail book_detail = 1;
+    string error_log = 2;
   }
 }
