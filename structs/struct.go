@@ -4,24 +4,43 @@ import (
 	"fmt"
 )
 
-type student struct {
-    name	string
-    age  	int
+type Student struct {
+	name string
+	age  int
 }
 
-func newStudent(name string, age int) (*student) {
-	student := student{name: name, age: age}
+type Classroom struct {
+	name  string
+	class string
+}
+
+func newStudent(name string, age int) *Student {
+	student := Student{name: name, age: age}
 
 	return &student
 }
 
-func Student() {
+func newClassroom(name string, class string) *Classroom {
+	classroom := Classroom{name: name, class: class}
 
-	var pupil *student
-	pupil = &student{name: "Jimmy", age: 30}
+	return &classroom
+}
 
-	fmt.Println(student{name: "John", age: 29})
-	fmt.Println(&student{name: "Steven", age: 25})
-	fmt.Println(newStudent("James", 30))
+func StudentInfo() {
+
+	var pupil *Student
+	pupil = &Student{name: "Jimmy", age: 30}
 	fmt.Println(pupil)
+
+	fmt.Println(Student{name: "John", age: 29})
+	fmt.Println(&Student{name: "Steven", age: 25})
+
+	var student interface{} = newStudent("James", 30)
+	var classroom interface{} = newClassroom("James", "1H")
+
+	studentCheck, ok := student.(*Student)
+	fmt.Println(studentCheck, ok)
+
+	classroomCheck, ok := classroom.(*Classroom)
+	fmt.Println(classroomCheck, ok)
 }

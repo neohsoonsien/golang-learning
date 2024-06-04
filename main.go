@@ -106,7 +106,7 @@ func main() {
 	pointer.Int()
 
 	string.Prefix("This is a string", "This")
-	structs.Student()
+	structs.StudentInfo()
 
 	fmt.Printf("Time now in miliseconds: %v, time now in nanosecond: %v.\n", unix_time.UnixMilli(), unix_time.UnixNano())
 
