@@ -76,6 +76,7 @@ message TheaterResponse {
 
 message BookRequest {
   string title = 1;
+  string author = 2;
 }
 
 message BookDetail {

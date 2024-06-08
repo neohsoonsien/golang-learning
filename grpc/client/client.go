@@ -98,7 +98,8 @@ func getBook(name string, c pb.GreeterClient) {
 	log.Println("Getting Book")
 
 	res, err := c.Book(context.Background(), &pb.BookRequest{
-		Title: name,
+		Title:  "Harry Potter",
+		Author: "J.K. Rowling",
 	})
 
 	if err != nil {
@@ -106,5 +107,5 @@ func getBook(name string, c pb.GreeterClient) {
 		panic(err)
 	}
 
-	log.Printf("The Theater response is %v", res)
+	log.Printf("The Book response is %v", res)
 }

@@ -91,11 +91,14 @@ func (s *server) Book(ctx context.Context, req *pb.BookRequest) (*pb.BookRespons
 
 	log.Println("Book title is: ", req.Title)
 
-	book := &pb.BookDetail{
-		Title:          req.Title,
-		Author: "J.K. Rowling",
-		Year: "2007",
-		Price: 59.90,
+	book := &pb.BookDetail{}
+	if req != nil && req.Title != "" && req.Author != "" {
+		book = &pb.BookDetail{
+			Title:  req.Title,
+			Author: req.Author,
+			Year:   "2007",
+			Price:  59.90,
+		}
 	}
 
 	return &pb.BookResponse{
@@ -104,8 +107,6 @@ func (s *server) Book(ctx context.Context, req *pb.BookRequest) (*pb.BookRespons
 		},
 	}, nil
 }
-
-
 
 func main() {
 	flag.Parse()
