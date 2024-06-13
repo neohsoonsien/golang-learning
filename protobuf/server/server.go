@@ -3,20 +3,21 @@ package main
 import (
 	"log"
 
-	"github.com/golang/protobuf/proto"
 	pb "golang-learning/protobuf/proto"
+
+	"google.golang.org/protobuf/proto"
 )
 
 func main() {
 	// define the user in protobuf message
-	user := &pb.Person{
+	user1 := &pb.Person{
 		Name: "Jimmy",
-		Age: 24,
+		Age:  24,
 	}
-	log.Printf("Person details are: %v", user)
+	log.Printf("Person details are: %v", user1)
 
 	// marshal the object into protobuf serialized data
-	data, err := proto.Marshal(user)
+	data, err := proto.Marshal(user1)
 	if err != nil {
 		log.Fatal("marshaling error: ", err)
 	}
@@ -33,4 +34,12 @@ func main() {
 	}
 	log.Print(newUser.GetName())
 	log.Print(newUser.GetAge())
+
+	// define another user for compare
+	user2 := &pb.Person{
+		Name: "Jimmy",
+		Age:  24,
+	}
+
+	log.Printf("Are user1 and user 2 equal? %v", proto.Equal(user1, user2))
 }
