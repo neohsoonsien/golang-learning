@@ -5,13 +5,20 @@ import (
 	"fmt"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 	"go.uber.org/zap"
 )
 
-func InsertOne(mongoURI string) {
+type Student struct {
+	Id   primitive.ObjectID `bson:"_id" json:"_id"`
+	Name string             `bson:"name" json:"name"`
+	Age  int32              `bson:"age" json:"age"`
+}
+
+func InsertOne(mongoURI string, insert bson.D) {
 
 	// ******************************************************* //
 	// Step 1: initialize logger
@@ -44,9 +51,10 @@ func InsertOne(mongoURI string) {
 	// ******************************************************* //
 	// query from the collection
 	collection := client.Database("students").Collection("students")
-	res, err := collection.InsertOne(context.TODO(), bson.D{{"name", "Jason"}, {"age", 23}})
+	res, err := collection.InsertOne(context.TODO(), insert)
 	if err != nil {
 		logger.Error(err)
 	}
+
 	logger.Infof("inserted document with ID %v\n", res.InsertedID)
 }
