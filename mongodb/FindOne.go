@@ -5,20 +5,13 @@ import (
 	"fmt"
 
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 	"go.uber.org/zap"
 )
 
-type Student struct {
-	Id   primitive.ObjectID `bson:"_id"`
-	Name string             `bson:"name" json:"name"`
-	Age  int32              `bson:"age" json:"age"`
-}
-
-func FindOne(mongoURI string) {
+func FindOne(mongoURI string, filter bson.D) *Student {
 
 	// ******************************************************* //
 	// Step 1: initialize logger
@@ -58,9 +51,11 @@ func FindOne(mongoURI string) {
 		// ErrNoDocuments means that the filter did not match any documents in
 		// the collection.
 		if err == mongo.ErrNoDocuments {
-			return
+			return &Student{}
 		}
 		logger.Error(err)
 	}
 	logger.Infof("The student is %v", student)
+
+	return student
 }
