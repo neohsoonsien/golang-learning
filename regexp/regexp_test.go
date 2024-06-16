@@ -15,7 +15,12 @@ func TestMain(m *testing.M) {
 // /////////////////////////////////////////////////
 // ///////////       Unit Tests      ///////////////
 // /////////////////////////////////////////////////
-func TestReplace(t *testing.T) {
-	t.Log("Start the \"Replace\" function test.")
-	log.Print(Replace("My Name is Muthu A/L Siva."))
+func TestReplaceSpaceWithUnderscore(t *testing.T) {
+	t.Log("Start the \"ReplaceSpaceWIthUnderscore\" function test.")
+	log.Print(ReplaceSpaceWithUnderscore("My Name is Muthu A/L Siva."))
+}
+
+func TestRemoveAfterDot(t *testing.T) {
+	t.Log("Start the \"RemoveAfterDot\" function test.")
+	log.Print(RemoveAfterDot("Filename.jpeg"))
 }
