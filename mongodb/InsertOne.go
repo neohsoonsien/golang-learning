@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 
-	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -18,7 +17,7 @@ type Student struct {
 	Age  int32              `bson:"age" json:"age"`
 }
 
-func InsertOne(mongoURI string, insert bson.D) {
+func InsertOne(mongoURI string, insert *Student) *Student {
 
 	// ******************************************************* //
 	// Step 1: initialize logger
@@ -57,4 +56,9 @@ func InsertOne(mongoURI string, insert bson.D) {
 	}
 
 	logger.Infof("inserted document with ID %v\n", res.InsertedID)
+
+	if res.InsertedID != primitive.NilObjectID {
+		return insert
+	}
+	return nil
 }

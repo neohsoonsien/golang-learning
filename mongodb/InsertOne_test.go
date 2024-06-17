@@ -6,8 +6,8 @@ import (
 	"testing"
 
 	"github.com/tryvium-travels/memongo"
-	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"gotest.tools/v3/assert"
 )
 
 var (
@@ -31,6 +31,15 @@ func TestMain(m *testing.M) {
 
 func TestInsertOne(t *testing.T) {
 	t.Log("TestInsertOne begins")
-	insert := bson.D{{"_id", primitive.NewObjectID()}, {"name", "Jason"}, {"age", 23}}
-	InsertOne(mongoServer.URI(), insert)
+
+	// insert the data
+	insert := &Student{
+		Id:   primitive.NewObjectID(),
+		Name: "Jason",
+		Age:  23,
+	}
+	res := InsertOne(mongoServer.URI(), insert)
+	log.Printf("The inserted student is %v", res)
+
+	assert.DeepEqual(t, insert, res)
 }
