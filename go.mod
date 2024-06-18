@@ -79,4 +79,5 @@ require (
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20231002182017-d307bd883b97 // indirect
 	gopkg.in/natefinch/npipe.v2 v2.0.0-20160621034901-c1b8fa8bdcce // indirect
 	gopkg.in/retry.v1 v1.0.3 // indirect
+	gotest.tools/v3 v3.5.1 // indirect
 )

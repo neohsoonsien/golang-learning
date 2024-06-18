@@ -46,7 +46,7 @@ func FindOne(mongoURI string, filter bson.D) *Student {
 	collection := client.Database("students").Collection("students")
 	opts := options.FindOne().SetSort(bson.D{{"name", 1}})
 	student := &Student{}
-	err = collection.FindOne(context.TODO(), bson.D{{"name", "Jason"}}, opts).Decode(student)
+	err = collection.FindOne(context.TODO(), filter, opts).Decode(student)
 	if err != nil {
 		// ErrNoDocuments means that the filter did not match any documents in
 		// the collection.
