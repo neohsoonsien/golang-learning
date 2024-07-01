@@ -18,7 +18,7 @@ func TestMain(m *testing.M) {
 // ///////////       Unit Tests      ///////////////
 // /////////////////////////////////////////////////
 func TestReplaceSpaceWithUnderscore(t *testing.T) {
-	t.Log("Start the \"ReplaceSpaceWIthUnderscore\" function test.")
+	t.Log("Start the \"ReplaceSpaceWithUnderscore\" function test.")
 
 	// test case for "/" and "\s"
 	input := "My Name is Muthu A/L Siva"
@@ -43,4 +43,15 @@ func TestRemoveIncludeDot(t *testing.T) {
 	input := "Image.jpeg"
 	expected := "Image"
 	assert.Equal(t, RemoveIncludeDot(input), expected)
+}
+
+func TestGetFileName(t *testing.T) {
+	t.Log("Start the \"TestGetFileName\" function test.")
+
+	fileUrl := "https://www.google.com/Image.jpeg?AcceptHeader=\"application/json\""
+	keyword := "jpeg"
+	fileName := GetFileName(fileUrl, keyword)
+
+	expected := "Image.jpeg"
+	assert.Equal(t, fileName, expected)
 }

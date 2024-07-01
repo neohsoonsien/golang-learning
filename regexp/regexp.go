@@ -1,7 +1,9 @@
 package regexp
 
 import (
+	"log"
 	"regexp"
+	"strings"
 )
 
 func ReplaceSpaceWithUnderscore(str string) string {
@@ -32,4 +34,22 @@ func RemoveIncludeDot(str string) string {
 	match := toBeRemoved.ReplaceAllString(str, "")
 
 	return match
+}
+
+func GetFileName(fileUrl string, keyword string) string {
+	// split the string into list
+	stringList := regexp.MustCompile("[/?]").Split(fileUrl, -1)
+	log.Printf("The extracted string list is %v", stringList)
+
+	// match for sub-string which contains the keyword
+	fileName := ""
+	for _, str := range stringList {
+		if strings.Contains(str, keyword) {
+			fileName = str
+		}
+	}
+
+	log.Printf("The matching filename is %v", fileName)
+
+	return fileName
 }
