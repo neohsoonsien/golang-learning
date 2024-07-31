@@ -42,4 +42,21 @@ func main() {
 	}
 
 	log.Printf("Are user1 and user 2 equal? %v", proto.Equal(user1, user2))
+
+	// person with address details
+	detail := make(map[string]string)
+	detail["address"] = "26, Rangon Road"
+	detail["postalCode"] = "12780"
+	detail["state"] = "Penang"
+	detail["country"] = "Malaysia"
+
+	user3 := &pb.Person{
+		Name: "Tim",
+		Age:  37,
+		Address: &pb.Details{
+			Detail: detail,
+		},
+	}
+
+	log.Printf("The user3's address is %v", user3.GetAddress())
 }

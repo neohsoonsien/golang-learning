@@ -4,7 +4,12 @@ package protobuf;
 
 option go_package = ".";
 
+message Details {
+    map<string, string> detail = 1;
+}
+
 message Person {
     string name   = 1;
     int32 age     = 2;
+    Details address = 3;
 }
