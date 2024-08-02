@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	reader "golang-learning/kafka/utils"
-	"math/rand"
 	"os"
 
 	"github.com/confluentinc/confluent-kafka-go/kafka"
@@ -19,6 +18,8 @@ func main() {
 	configFile := os.Args[1]
 	conf := reader.ReadConfig(configFile)
 
+	fmt.Printf("The configuration for kafka are %v.\n", conf)
+
 	topic := "purchases"
 	p, err := kafka.NewProducer(&conf)
 
@@ -30,25 +31,27 @@ func main() {
 	// Go-routine to handle message delivery reports and
 	// possibly other event types (errors, stats, etc)
 	go func() {
-		for e := range p.Events() {
-			switch ev := e.(type) {
+		for event := range p.Events() {
+			fmt.Printf("The event is %v.\n", event)
+			switch eventType := event.(type) {
 			case *kafka.Message:
-				if ev.TopicPartition.Error != nil {
-					fmt.Printf("Failed to deliver message: %v\n", ev.TopicPartition)
+				fmt.Printf("THe event type is %v.\n", eventType)
+				if eventType.TopicPartition.Error != nil {
+					fmt.Printf("Failed to deliver message: %v\n", eventType.TopicPartition)
 				} else {
 					fmt.Printf("Produced event to topic %s: key = %-10s value = %s\n",
-						*ev.TopicPartition.Topic, string(ev.Key), string(ev.Value))
+						*eventType.TopicPartition.Topic, string(eventType.Key), string(eventType.Value))
 				}
 			}
 		}
 	}()
 
 	users := [...]string{"eabara", "jsmith", "sgarcia", "jbernard", "htanaka", "awalther"}
-	items := [...]string{"book", "alarm clock", "t-shirts", "gift card", "batteries"}
+	items := [...]string{"book", "alarm clock", "t-shirts", "gift card", "batteries", "sport shoes"}
 
-	for n := 0; n < 10; n++ {
-		key := users[rand.Intn(len(users))]
-		data := items[rand.Intn(len(items))]
+	for n := 0; n < 6; n++ {
+		key := users[n]
+		data := items[n]
 		p.Produce(&kafka.Message{
 			TopicPartition: kafka.TopicPartition{Topic: &topic, Partition: kafka.PartitionAny},
 			Key:            []byte(key),
@@ -57,6 +60,6 @@ func main() {
 	}
 
 	// Wait for all messages to be delivered
-	p.Flush(15 * 1000)
+	p.Flush(5 * 1000)
 	p.Close()
 }
