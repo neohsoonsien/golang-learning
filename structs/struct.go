@@ -4,9 +4,15 @@ import (
 	"fmt"
 )
 
-type Student struct {
+type Parent struct {
 	name string
 	age  int
+}
+
+type Student struct {
+	name   string
+	age    int
+	parent Parent
 }
 
 type Classroom struct {
