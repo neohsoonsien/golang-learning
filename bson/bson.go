@@ -16,15 +16,12 @@ func BsonToMap() (string, error) {
 	object["$set"] = set
 	object["$unset"] = unset
 
-	for mongoOperation, updates := range object {
-		if mongoOperation == "$set" {
-			for field, value := range updates.(primitive.M) {
-				if field == "field1" {
-					log.Printf("key: %v, value: %v", field, value)
-					return value.(string), nil
-				}
-			}
+	if setUpdate, setUpdateExist := object["$set"]; setUpdateExist {
+		if fieldUpdate, fieldUpdateExist := setUpdate.(primitive.M)["field1"]; fieldUpdateExist {
+			log.Printf("key: field1, value: %v", fieldUpdate)
+			return fieldUpdate.(string), nil
 		}
 	}
+
 	return "", errors.New("Failed to get bson map value.")
 }
