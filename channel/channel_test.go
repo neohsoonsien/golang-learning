@@ -22,6 +22,10 @@ func TestBuffer(t *testing.T) {
 	Buffer()
 }
 
+func TestClose(t *testing.T) {
+	Close()
+}
+
 func TestSynchronization(t *testing.T) {
 	Synchronization()
 }
