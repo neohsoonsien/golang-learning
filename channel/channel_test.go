@@ -29,3 +29,7 @@ func TestClose(t *testing.T) {
 func TestSynchronization(t *testing.T) {
 	Synchronization()
 }
+
+func TestTimeout(*testing.T) {
+	Timeout()
+}
