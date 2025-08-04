@@ -5,6 +5,8 @@ import (
 	"fmt"
 
 	"github.com/btcsuite/btcd/btcec/v2"
+	"github.com/btcsuite/btcd/btcec/v2/ecdsa"
+	"github.com/btcsuite/btcd/chaincfg/chainhash"
 )
 
 func DerivePublicPrivateKey() {
@@ -16,7 +18,25 @@ func DerivePublicPrivateKey() {
 	}
 
 	// derive private key and public key from []byte to *secp256k1.PrivateKey and *secp256k1.PrivateKey, respectively
-	privateKey, publicKey := btcec.PrivKeyFromBytes(privateKeyBytes)
+	privateKeySecp256k1, publicKeySecp256k1 := btcec.PrivKeyFromBytes(privateKeyBytes)
+	fmt.Printf("The public key is: %v, and the private key is: %v\n", publicKeySecp256k1, privateKeySecp256k1)
 
-	fmt.Printf("The public key is: %v, and the private key is: %v", publicKey, privateKey)
+	// private key in ECDSA
+	privateKeyEcdsa := privateKeySecp256k1.ToECDSA()
+	fmt.Printf("The private key in ECDSA is: %v\n", privateKeyEcdsa)
+
+	// prepare message
+	message := "Example message"
+	data := fmt.Sprintf("\x19Tron Signed Message:\n%d%s", len(message), message)
+	messageHash := chainhash.DoubleHashB([]byte(data))
+
+	// sign the message
+	signature := ecdsa.Sign(privateKeySecp256k1, messageHash)
+
+	// Serialize and display the signature.
+	fmt.Printf("Serialized Signature: %x\n", signature.Serialize())
+
+	// Verify the signature for the message using the public key.
+	verified := signature.Verify(messageHash, publicKeySecp256k1)
+	fmt.Printf("Signature Verified? %v\n", verified)
 }
