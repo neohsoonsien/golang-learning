@@ -6,7 +6,6 @@ import (
 
 	"github.com/btcsuite/btcd/btcec/v2"
 	"github.com/btcsuite/btcd/btcec/v2/ecdsa"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
 )
 
 func DerivePublicPrivateKey() {
@@ -28,15 +27,24 @@ func DerivePublicPrivateKey() {
 	// prepare message
 	message := "Example message"
 	data := fmt.Sprintf("\x19Tron Signed Message:\n%d%s", len(message), message)
-	messageHash := chainhash.DoubleHashB([]byte(data))
+	//messageHash := chainhash.DoubleHashB([]byte(data))
 
 	// sign the message
-	signature := ecdsa.Sign(privateKeySecp256k1, messageHash)
+	// signature := ecdsa.Sign(privateKeySecp256k1, messageHash)
+	hash, err := hex.DecodeString(data)
+	if err != nil {
+		fmt.Errorf("Error in hex.DecodeString, err: %v", err)
+	}
+
+	signature, err := ecdsa.SignCompact(privateKeySecp256k1, hash, false)
+	if err != nil {
+		fmt.Errorf("Error in ecdsa.SignCompact, err: %v", err)
+	}
 
 	// Serialize and display the signature.
-	fmt.Printf("Serialized Signature: %x\n", signature.Serialize())
+	fmt.Printf("Serialized Signature: %x\n", hex.EncodeToString(signature))
 
-	// Verify the signature for the message using the public key.
-	verified := signature.Verify(messageHash, publicKeySecp256k1)
-	fmt.Printf("Signature Verified? %v\n", verified)
+	// // Verify the signature for the message using the public key.
+	// verified := signature.Verify(messageHash, publicKeySecp256k1)
+	// fmt.Printf("Signature Verified? %v\n", verified)
 }
