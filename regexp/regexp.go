@@ -53,3 +53,11 @@ func GetFileName(fileUrl string, keyword string) string {
 
 	return fileName
 }
+
+func MatchString(str string) []string {
+	// compile an optimized regexp struct, and return the list of string
+	// r, _ := regexp.Compile("^(T)[1-9A-HJ-NP-Za-km-z]{0,38}")
+	r, _ := regexp.Compile("^(T)[1-9A-Za-z][^0IOl]{0,38}$")
+
+	return r.FindAllString(str, -1)
+}
