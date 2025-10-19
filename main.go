@@ -23,7 +23,7 @@ import (
 	"golang-learning/method_struct"
 	"golang-learning/readfile"
 
-	// "golang-learning/mongodb"
+	"golang-learning/mongodb"
 	"golang-learning/outer"
 	"golang-learning/pointer"
 
@@ -64,6 +64,8 @@ func main() {
 	argument.Output()
 
 	logger.Logger()
+
+	mongodb.Ping()
 
 	// mongodb.Find()
 
