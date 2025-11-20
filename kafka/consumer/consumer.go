@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	reader "golang-learning/kafka/utils"
+	"log"
 	"os"
 	"os/signal"
 	"syscall"
@@ -27,7 +28,7 @@ func main() {
 	c, err := kafka.NewConsumer(&conf)
 
 	if err != nil {
-		fmt.Printf("Failed to create consumer: %s", err)
+		log.Printf("Failed to create consumer: %s", err)
 		os.Exit(1)
 	}
 
@@ -42,7 +43,7 @@ func main() {
 	for run {
 		select {
 		case sig := <-sigchan:
-			fmt.Printf("Caught signal %v: terminating\n", sig)
+			log.Printf("Caught signal %v: terminating\n", sig)
 			run = false
 		default:
 			ev, err := c.ReadMessage(100 * time.Millisecond)
@@ -50,7 +51,7 @@ func main() {
 				// Errors are informational and automatically handled by the consumer
 				continue
 			}
-			fmt.Printf("Consumed event from topic %s: key = %-10s value = %s\n",
+			log.Printf("Consumed event from topic %s: key = %-10s value = %s\n",
 				*ev.TopicPartition.Topic, string(ev.Key), string(ev.Value))
 		}
 	}

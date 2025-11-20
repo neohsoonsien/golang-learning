@@ -4,14 +4,15 @@ go 1.19
 
 require (
 	github.com/abbot/go-http-auth v0.4.0
+	github.com/alicebob/miniredis/v2 v2.33.0
 	github.com/apache/beam/sdks/v2 v2.46.0
 	github.com/aws/aws-sdk-go v1.45.14
 	github.com/btcsuite/btcd/btcec/v2 v2.3.3
-	github.com/btcsuite/btcd/chaincfg/chainhash v1.1.0
 	github.com/confluentinc/confluent-kafka-go v1.9.2
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/ethereum/go-ethereum v1.10.26
 	github.com/go-redis/redis v6.15.9+incompatible
+	github.com/go-redis/redismock/v9 v9.2.0
 	github.com/gorilla/websocket v1.5.0
 	github.com/joho/godotenv v1.4.0
 	github.com/shopspring/decimal v1.3.1
@@ -19,6 +20,7 @@ require (
 	go.mongodb.org/mongo-driver v1.11.4
 	go.uber.org/zap v1.24.0
 	golang.org/x/crypto v0.14.0
+	golang.org/x/exp v0.0.0-20230206171751-46f607a40771
 	golang.org/x/net v0.16.0
 	golang.org/x/oauth2 v0.10.0
 	google.golang.org/grpc v1.58.2
@@ -36,14 +38,13 @@ require (
 	github.com/StackExchange/wmi v0.0.0-20180116203802-5d049714c4a6 // indirect
 	github.com/acobaugh/osrelease v0.0.0-20181218015638-a93a0a55a249 // indirect
 	github.com/alicebob/gopher-json v0.0.0-20200520072559-a9ecdc9d1d3a // indirect
-	github.com/alicebob/miniredis/v2 v2.33.0 // indirect
+	github.com/btcsuite/btcd/chaincfg/chainhash v1.1.0 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/deckarep/golang-set v1.8.0 // indirect
 	github.com/decred/dcrd/dcrec/secp256k1/v4 v4.0.1 // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/go-ole/go-ole v1.2.1 // indirect
-	github.com/go-redis/redismock/v9 v9.2.0 // indirect
 	github.com/go-stack/stack v1.8.0 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
@@ -59,8 +60,6 @@ require (
 	github.com/mattn/go-isatty v0.0.14 // indirect
 	github.com/mitchellh/mapstructure v1.4.2 // indirect
 	github.com/montanaflynn/stats v0.0.0-20171201202039-1bf9dbcd8cbe // indirect
-	github.com/onsi/ginkgo v1.16.5 // indirect
-	github.com/onsi/gomega v1.25.0 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/redis/go-redis/v9 v9.2.0 // indirect
 	github.com/rjeczalik/notify v0.9.1 // indirect
