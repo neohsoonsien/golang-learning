@@ -9,8 +9,8 @@ import (
 	"gotest.tools/v3/assert"
 )
 
-func TestObjectID(t *testing.T) {
-	t.Log("TestObjectID begins")
+func TestTimestampObjectID(t *testing.T) {
+	t.Log("TestTimestampObjectID begins")
 
 	// insert the data
 	insert := &Student{
@@ -34,4 +34,19 @@ func TestObjectID(t *testing.T) {
 	// compare and verify the result
 	log.Printf("The 'Timestamp' comparison is %v", previousTimestamp.Compare(currentTimestamp))
 	assert.DeepEqual(t, previousTimestamp.Compare(currentTimestamp), -1)
+}
+
+func TestCompareObjectID(t *testing.T) {
+	t.Log("TestCompareObjectID begins")
+
+	// generate 2 different ObjectID
+	firstObjectId := primitive.NewObjectID()
+	secondObjectId := primitive.NewObjectID()
+
+	assert.Assert(t, firstObjectId != secondObjectId)
+
+	// generate same ObjectID
+	secondObjectId = firstObjectId
+
+	assert.Equal(t, firstObjectId, secondObjectId)
 }
