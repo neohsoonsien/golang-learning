@@ -50,3 +50,9 @@ func TestCompareObjectID(t *testing.T) {
 
 	assert.Equal(t, firstObjectId, secondObjectId)
 }
+
+func TestNilObjectId(t *testing.T) {
+	objectId := &primitive.NilObjectID
+
+	assert.Equal(t, *objectId, primitive.NilObjectID)
+}
