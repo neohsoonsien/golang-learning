@@ -250,6 +250,42 @@ func TestConvertStringToDecimal128(t *testing.T) {
 	}
 }
 
+func TestConvertHexadecimalToBase10(t *testing.T) {
+	t.Log("TestConvertHexadecimalToBase10")
+
+	// begins with "0x"
+	{
+		hexadecimal := "0x989680"
+		expected := int64(10000000)
+		base10, err := ConvertHexadecimalToBase10(hexadecimal)
+
+		// verify results
+		if err != nil {
+			t.Errorf("Expecting no errors, but get err: %v", err)
+		}
+
+		if base10 != expected {
+			t.Errorf("Expected value: %v, Actual: %v", expected, base10)
+		}
+	}
+
+	// does not begin with "0x"
+	{
+		hexadecimal := "3595a6c0"
+		expected := int64(899000000)
+		base10, err := ConvertHexadecimalToBase10(hexadecimal)
+
+		// verify results
+		if err != nil {
+			t.Errorf("Expecting no errors, but get err: %v", err)
+		}
+
+		if base10 != expected {
+			t.Errorf("Expected value: %v, Actual: %v", expected, base10)
+		}
+	}
+}
+
 func TestCompareDecimal128(t *testing.T) {
 	t.Log("TestCompareDecimal128")
 

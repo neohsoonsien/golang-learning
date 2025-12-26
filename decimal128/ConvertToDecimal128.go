@@ -60,6 +60,7 @@ func ConvertDecimalToDecimal128(x decimal.Decimal) (primitive.Decimal128, error)
 
 	return decimal128, nil
 }
+
 func ConvertStringToDecimal128(str string) (primitive.Decimal128, error) {
 	var x primitive.Decimal128
 	var err error
@@ -80,6 +81,25 @@ func ConvertStringToDecimal128(str string) (primitive.Decimal128, error) {
 		}
 	}
 	return x, nil
+}
+
+func ConvertHexadecimalToBase10(hexadecimal string) (int64, error) {
+	// strip "0x" if the hexadecimal string starts with prefix
+	if hexadecimal[:2] == "0x" {
+		hexadecimal = hexadecimal[2:]
+	}
+
+	// convert hexadecimal to base10
+	base10, err := strconv.ParseInt(hexadecimal, 16, 32)
+
+	// error handling
+	if err != nil {
+		fmt.Println(err)
+		return 0, err
+	}
+	fmt.Printf("The equivalence of hexadecimal %s (base16) in base10 is %v (base10).\n", hexadecimal, base10)
+
+	return base10, nil
 }
 
 func CompareDecimal128(d1, d2 primitive.Decimal128) (int, error) {
