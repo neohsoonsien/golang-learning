@@ -114,8 +114,6 @@ func main() {
 
 	// mongodb.Aggregate2()
 
-	// mongodb.BulkWrite()
-
 	switch_control.Switch("C")
 
 	bytes.StringToBytes()
