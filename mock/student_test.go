@@ -6,18 +6,6 @@ import (
 	"gotest.tools/v3/assert"
 )
 
-type MockStudent struct {
-	Name string `json:"name"`
-	Id   string `json:"id"`
-}
-
-func (s *MockStudent) GetName() (*string, error) {
-	if s != nil {
-		return &s.Name, nil
-	}
-	return nil, nil
-}
-
 func TestSetName(t *testing.T) {
 	t.Log("TestSetName begins")
 

@@ -4,6 +4,12 @@ type Student struct {
 	Name string `json:"name"`
 	Id   string `json:"id"`
 }
+
+type StudentAction interface {
+	SetName(string) error
+	GetName() (*string, error)
+}
+
 func (s *Student) SetName(name string) error {
 	s.Name = name
 
